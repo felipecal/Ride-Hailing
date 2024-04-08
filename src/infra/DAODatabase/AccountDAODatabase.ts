@@ -18,7 +18,7 @@ export default class AccountDAODatabase implements AccountDAO{
     return account;
   }
 
-  async save(account: any) {
+  async saveAccount(account: any) {
     const connection = pgp()("cccat16-postgres://postgres:123456@localhost:5432");
     await connection.query("insert into cccat16.account (account_id, name, email, cpf, car_plate, is_passenger, is_driver) values ($1, $2, $3, $4, $5, $6, $7)", [account.accountId, account.name, account.email, account.cpf, account.carPlate, !!account.isPassenger, !!account.isDriver]);
     await connection.$pool.end();

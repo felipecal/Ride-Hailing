@@ -16,7 +16,7 @@ export default class Signup {
     if (!this.validateEmail(input.email)) throw new Error(`Invalid email`)
     if (!validateCpf(input.cpf)) throw new Error(`Invalid cpf`)
     if (input.isDriver && !this.validateCarPlate(input.carPlate)) throw new Error(`Invalid car plate`)
-    await this.accountDAO.save(input)
+    await this.accountDAO.saveAccount(input)
     return {
       accountId: input.accountId
     };
