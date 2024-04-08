@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/api.ts",
+    "dev": "ts-node-dev src/api.ts",
+    "test": "npx jest"
+  },
   "dependencies": {
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.4",
