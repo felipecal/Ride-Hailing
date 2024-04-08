@@ -11,6 +11,7 @@ test("Deve criar uma conta para o passageiro", async function () {
 		cpf: "87748248800",
 		isPassenger: true
 	};
-	const output = await axios.post("http://localhost:3000/signup", input);
-	console.log(output.status, output.data);
+	const resultSignUp = await axios.post("http://localhost:3000/signup", input);
+	const resultOfGetUser = await axios.get(`http://localhost:3000/getAccountById/${resultSignUp.data.accountId}`);
+	expect(resultSignUp.data.accountId).toBe(resultOfGetUser.data.account_id);
 });
