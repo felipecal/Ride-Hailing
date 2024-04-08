@@ -1,11 +1,11 @@
-import { validate } from "../src/validateCpf";
+import { validateCpf } from "../src/application/validateCpf";
 
 test.each([
 	"97456321558",
 	"71428793860",
 	"87748248800"
 ])("Deve testar um cpf válido: %s", function (cpf: any) {
-	expect(validate(cpf)).toBe(true);
+	expect(validateCpf(cpf)).toBe(true);
 });
 
 test.each([
@@ -15,5 +15,5 @@ test.each([
 	"123",
 	"1234566789123456789"
 ])("Deve testar um cpf inválido: %s", function (cpf: any) {
-	expect(validate(cpf)).toBe(false);
+	expect(validateCpf(cpf)).toBe(false);
 });
