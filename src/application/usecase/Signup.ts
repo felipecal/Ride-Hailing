@@ -1,6 +1,6 @@
 import pgp from "pg-promise";
 import crypto from "crypto";
-import { validateCpf } from "../validateCpf";
+import { validateCpf } from "../utils/validateCpf";
 import AccountDAO from "../DAO/AccountDAO";
 
 
