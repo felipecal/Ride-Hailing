@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/api.ts",
-    "dev": "ts-node-dev src/api.ts",
+    "start": "ts-node src/infra/api.ts",
+    "dev": "ts-node-dev src/infra/api.ts",
     "test": "npx jest"
   },
   "dependencies": {
