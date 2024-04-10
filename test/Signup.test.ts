@@ -1,14 +1,16 @@
 import GetAccount from '../src/application/usecase/GetAccount';
 import Signup from '../src/application/usecase/Signup';
-import AccountDAODatabase from '../src/infra/DAODatabase/AccountDAODatabase';
 import crypto from 'crypto';
+import { AccountDAODatabase } from '../src/infra/DAODatabase/AccountDAODatabase';
+import { MailgerGatewayMemory } from '../src/infra/Gateway/MailerGateway';
 
 let signup: Signup;
 let getAccount: GetAccount;
 
 beforeEach(() => {
   const accoutDAO = new AccountDAODatabase();
-  signup = new Signup(accoutDAO);
+  const mailerGateway = new MailgerGatewayMemory();
+  signup = new Signup(accoutDAO, mailerGateway);
   getAccount = new GetAccount(accoutDAO);
 });
 
