@@ -1,7 +1,11 @@
 import pgp from 'pg-promise';
-import AccountDAO from '../../application/DAO/AccountDAO';
+export interface AccountDAO {
+  getByEmail(email: string): Promise<any>;
+  getById(accountId: string): Promise<any>;
+  saveAccount(account: any): Promise<void>;
+}
 
-export default class AccountDAODatabase implements AccountDAO {
+export class AccountDAODatabase implements AccountDAO {
   async getByEmail(email: string) {
     const connection = pgp()('cccat16-postgres://postgres:123456@localhost:5432');
     const [account] = await connection.query('select * from cccat16.account where email = $1', [email]);

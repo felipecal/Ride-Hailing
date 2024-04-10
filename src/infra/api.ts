@@ -1,15 +1,15 @@
 import express from 'express';
-import AccountDAODatabase from './DAODatabase/AccountDAODatabase';
 import Signup from '../application/usecase/Signup';
 import GetAccount from '../application/usecase/GetAccount';
-import { MailgerGateway } from './Gateway/MailerGateway';
+import { MailgerGatewayMemory } from './Gateway/MailerGateway';
+import { AccountDAODatabase } from './DAODatabase/AccountDAODatabase';
 const app = express();
 app.use(express.json());
 
 app.post('/signup', async function (req, res) {
   try {
     const accountDAO = new AccountDAODatabase();
-    const mailerGateway = new MailgerGateway();
+    const mailerGateway = new MailgerGatewayMemory();
     const signup = new Signup(accountDAO, mailerGateway);
     const resultOfSignup = await signup.execute(req.body);
     res.json(resultOfSignup);
