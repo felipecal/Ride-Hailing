@@ -2,6 +2,8 @@
 import crypto from "crypto";
 import { AccountDAODatabase } from "../src/infra/DAODatabase/AccountDAODatabase";
 
+//Integration test
+
 test("Deve salvar um registro de passageiro na tabela account e conulstar um registro por id", async function(){
   const account = {
       accountId: crypto.randomUUID(),

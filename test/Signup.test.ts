@@ -7,6 +7,7 @@ import { MailgerGatewayMemory } from '../src/infra/Gateway/MailerGateway';
 let signup: Signup;
 let getAccount: GetAccount;
 
+//Integration test with unit test
 beforeEach(() => {
   const accoutDAO = new AcountDAOMemory();
   const mailerGateway = new MailgerGatewayMemory();

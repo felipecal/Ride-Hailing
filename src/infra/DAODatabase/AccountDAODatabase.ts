@@ -5,6 +5,7 @@ export interface AccountDAO {
   saveAccount(account: any): Promise<void>;
 }
 
+// Driven/Port 
 export class AccountDAODatabase implements AccountDAO {
   async getByEmail(email: string) {
     const connection = pgp()('cccat16-postgres://postgres:123456@localhost:5432');
@@ -13,6 +14,7 @@ export class AccountDAODatabase implements AccountDAO {
     return account;
   }
 
+  // Driven/Adapter 
   async getById(accountId: string) {
     const connection = pgp()('cccat16-postgres://postgres:123456@localhost:5432');
     const [account] = await connection.query('select * from cccat16.account where account_id = $1', [accountId]);
@@ -31,6 +33,7 @@ export class AccountDAODatabase implements AccountDAO {
 }
 
 
+// Driven/Adapter 
 export class AcountDAOMemory implements AccountDAO {
   accounts: any[];
 

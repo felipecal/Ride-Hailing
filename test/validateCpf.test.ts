@@ -1,5 +1,5 @@
 import { validateCpf } from '../src/application/utils/validateCpf';
-
+// Unit test
 test.each(['97456321558', '71428793860', '87748248800'])('Deve testar um cpf válido: %s', function (cpf: any) {
   expect(validateCpf(cpf)).toBe(true);
 });

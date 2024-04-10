@@ -4,6 +4,7 @@ axios.defaults.validateStatus = function () {
   return true;
 };
 
+//Integration test
 test('Deve criar uma conta para o passageiro e consultar conta', async function () {
   const input = {
     name: 'John Doe',
