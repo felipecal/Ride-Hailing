@@ -1,14 +1,14 @@
 import GetAccount from '../src/application/usecase/GetAccount';
 import Signup from '../src/application/usecase/Signup';
 import crypto from 'crypto';
-import { AccountDAODatabase } from '../src/infra/DAODatabase/AccountDAODatabase';
+import { AccountDAODatabase, AcountDAOMemory } from '../src/infra/DAODatabase/AccountDAODatabase';
 import { MailgerGatewayMemory } from '../src/infra/Gateway/MailerGateway';
 
 let signup: Signup;
 let getAccount: GetAccount;
 
 beforeEach(() => {
-  const accoutDAO = new AccountDAODatabase();
+  const accoutDAO = new AcountDAOMemory();
   const mailerGateway = new MailgerGatewayMemory();
   signup = new Signup(accoutDAO, mailerGateway);
   getAccount = new GetAccount(accoutDAO);
@@ -22,8 +22,13 @@ test('Deve criar a conta de um passageiro', async function () {
     isPassenger: true,
   };
   const resultOfSignup = await signup.execute(input);
+  console.log('resultOfSignup', resultOfSignup);
+
   const resultOfGetAccount = await getAccount.execute(resultOfSignup.accountId);
-  expect(resultOfSignup.accountId).toBe(resultOfGetAccount.account_id);
+  expect(resultOfSignup.accountId).toBeDefined();
+  expect(resultOfGetAccount.name).toBe(input.name);
+  expect(resultOfGetAccount.email).toBe(input.email);
+  expect(resultOfGetAccount.cpf).toBe(input.cpf);
 });
 
 test('Nao deve criar a conta de um passageiro com o nome inválido', async function () {
@@ -78,7 +83,10 @@ test('Deve criar a conta de um motorista', async function () {
   };
   const resultOfSignup = await signup.execute(input);
   const resultOfGetAccount = await getAccount.execute(resultOfSignup.accountId);
-  expect(resultOfSignup.accountId).toBe(resultOfGetAccount.account_id);
+  expect(resultOfSignup.accountId).toBeDefined();
+  expect(resultOfGetAccount.name).toBe(input.name);
+  expect(resultOfGetAccount.email).toBe(input.email);
+  expect(resultOfGetAccount.cpf).toBe(input.cpf);
 });
 
 test('Não deve criar a conta de um motorista com a palca inválida', async function () {
