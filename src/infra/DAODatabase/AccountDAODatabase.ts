@@ -29,3 +29,24 @@ export class AccountDAODatabase implements AccountDAO {
     await connection.$pool.end();
   }
 }
+
+
+export class AcountDAOMemory implements AccountDAO {
+  accounts: any[];
+
+  constructor() {
+    this.accounts = [];
+  }
+  async getByEmail(email: string): Promise<any> {
+    const account = this.accounts.find((account: any) => account.email === email)
+    return account;
+  }
+  async getById(accountId: string): Promise<any> {
+    const account = this.accounts.find((account: any) => account.accountId === accountId);
+    return account;
+  }
+  async saveAccount(account: any): Promise<void> {
+    this.accounts.push(account)
+  }
+
+}
