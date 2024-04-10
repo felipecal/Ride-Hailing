@@ -1,14 +1,14 @@
 import pgp from 'pg-promise';
 import crypto from 'crypto';
 import { validateCpf } from '../utils/validateCpf';
-import AccountDAO from '../DAO/AccountDAO';
-import MailerGateway from '../../infra/Gateway/MailerGateway';
+import { AccountDAO } from '../../infra/DAODatabase/AccountDAODatabase';
+import { MailerGateway } from '../../infra/Gateway/MailerGateway';
 
 export default class Signup {
   constructor(
     readonly accountDAO: AccountDAO,
     readonly mailerGateway: MailerGateway,
-  ) {}
+  ) { }
 
   async execute(input: Input) {
     input.accountId = crypto.randomUUID();
@@ -19,7 +19,7 @@ export default class Signup {
     if (!validateCpf(input.cpf)) throw new Error(`Invalid cpf`);
     if (input.isDriver && !this.validateCarPlate(input.carPlate)) throw new Error(`Invalid car plate`);
     await this.accountDAO.saveAccount(input);
-    await this.mailerGateway.send(account.email, 'Welcome', '');
+    await this.mailerGateway.send(input.email, 'Welcome', '');
     return {
       accountId: input.accountId,
     };
