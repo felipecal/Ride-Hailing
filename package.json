@@ -1,7 +1,7 @@
 {
-  "name": "ride",
+  "name": "Ride-Hailing",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/infra/api.ts",
   "license": "MIT",
   "scripts": {
     "start": "ts-node src/infra/api.ts",
