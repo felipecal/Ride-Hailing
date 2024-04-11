@@ -3,6 +3,7 @@ import Signup from '../src/application/usecase/Signup';
 import crypto from 'crypto';
 import { AccountDAODatabase, AcountDAOMemory } from '../src/infra/DAODatabase/AccountDAODatabase';
 import { MailgerGatewayMemory } from '../src/infra/Gateway/MailerGateway';
+import sinon from 'sinon';
 
 let signup: Signup;
 let getAccount: GetAccount;
@@ -106,3 +107,28 @@ test('Não deve pegar a conta com o id errado', async function () {
   const randomAccountId = crypto.randomUUID();
   await expect(getAccount.execute(randomAccountId)).rejects.toThrow(new Error('Account not found'));
 });
+
+test('Deve criar a conta para um passageiro com sutb', async function () {
+  const input = {
+    name: 'John Doe',
+    email: `john.doe${Math.random()}@gmail.com`,
+    cpf: '87748248800',
+    isPassenger: true,
+  };
+  const saveAccountStub = sinon.stub(AccountDAODatabase.prototype, "saveAccount").resolves();
+  const getAccountByEmailStub = sinon.stub(AccountDAODatabase.prototype, "getByEmail").resolves(undefined);
+  const getAccountByIdStub = sinon.stub(AccountDAODatabase.prototype, "getById").resolves(input);
+  const accountDAO = new AccountDAODatabase();
+  const mailerGateway = new MailgerGatewayMemory();
+  const signup = new Signup(accountDAO, mailerGateway);
+  const getAccount = new GetAccount(accountDAO);
+  const resultOfSignup = await signup.execute(input);
+  expect(resultOfSignup.accountId).toBeDefined();
+  const resultGetAccount = await getAccount.execute(resultOfSignup.accountId)
+  expect(resultGetAccount.name).toBe(input.name);
+  expect(resultGetAccount.email).toBe(input.email);
+  expect(resultGetAccount.cpf).toBe(input.cpf);
+  saveAccountStub.restore();
+  getAccountByEmailStub.restore();
+  getAccountByIdStub.restore();
+})
