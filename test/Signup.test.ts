@@ -10,6 +10,7 @@ let getAccount: GetAccount;
 
 //Integration test with unit test
 beforeEach(() => {
+  // Implementation of fake (AccountDAOMemory and MailerGatewayMemory)
   const accoutDAO = new AcountDAOMemory();
   const mailerGateway = new MailgerGatewayMemory();
   signup = new Signup(accoutDAO, mailerGateway);
