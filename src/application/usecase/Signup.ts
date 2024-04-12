@@ -8,7 +8,7 @@ export default class Signup {
   constructor(
     readonly accountDAO: AccountDAO,
     readonly mailerGateway: MailerGateway,
-  ) { }
+  ) {}
 
   async execute(input: Input) {
     input.accountId = crypto.randomUUID();

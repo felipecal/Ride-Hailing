@@ -1,4 +1,4 @@
-import { AccountDAO } from "../../infra/DAODatabase/AccountDAODatabase";
+import { AccountDAO } from '../../infra/DAODatabase/AccountDAODatabase';
 export default class GetAccount {
   constructor(readonly accountDAO: AccountDAO) {}
 
