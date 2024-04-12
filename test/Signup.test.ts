@@ -133,3 +133,24 @@ test('Deve criar a conta para um passageiro com sutb', async function () {
   getAccountByEmailStub.restore();
   getAccountByIdStub.restore();
 })
+
+test('Deve criar a conta de um passageiro com spy', async function () {
+  const input = {
+    name: 'John Doe',
+    email: `john.doe${Math.random()}@gmail.com`,
+    cpf: '87748248800',
+    isPassenger: true,
+  };
+  const saveAccountSpy = sinon.spy(AccountDAODatabase.prototype, "saveAccount");
+  const accountDAO = new AccountDAODatabase();
+  const mailerGateway = new MailgerGatewayMemory();
+  const signup = new Signup(accountDAO, mailerGateway);
+  const getAccount = new GetAccount(accountDAO);
+  const resultOfSignup = await signup.execute(input);
+  expect(resultOfSignup.accountId).toBeDefined();
+  const resultGetAccount = await getAccount.execute(resultOfSignup.accountId)
+  expect(resultGetAccount.name).toBe(input.name);
+  expect(resultGetAccount.email).toBe(input.email);
+  expect(resultGetAccount.cpf).toBe(input.cpf);
+  expect(saveAccountSpy.calledWith(input)).toBe(true); // Use spy to confirm with saveAccount receive input.
+})
