@@ -2,7 +2,7 @@ import GetAccount from '../src/application/usecase/GetAccount';
 import Signup from '../src/application/usecase/Signup';
 import crypto from 'crypto';
 import { AccountDAODatabase, AcountDAOMemory } from '../src/infra/DAODatabase/AccountDAODatabase';
-import { MailgerGatewayMemory } from '../src/infra/Gateway/MailerGateway';
+import { MailerGatewayMemory } from '../src/infra/Gateway/MailerGateway';
 import sinon from 'sinon';
 
 let signup: Signup;
@@ -12,7 +12,7 @@ let getAccount: GetAccount;
 beforeEach(() => {
   // Implementation of fake (AccountDAOMemory and MailerGatewayMemory)
   const accoutDAO = new AcountDAOMemory();
-  const mailerGateway = new MailgerGatewayMemory();
+  const mailerGateway = new MailerGatewayMemory();
   signup = new Signup(accoutDAO, mailerGateway);
   getAccount = new GetAccount(accoutDAO);
 });
@@ -120,7 +120,7 @@ test('Deve criar a conta para um passageiro com sutb', async function () {
   const getAccountByEmailStub = sinon.stub(AccountDAODatabase.prototype, 'getByEmail').resolves(undefined);
   const getAccountByIdStub = sinon.stub(AccountDAODatabase.prototype, 'getById').resolves(input);
   const accountDAO = new AccountDAODatabase();
-  const mailerGateway = new MailgerGatewayMemory();
+  const mailerGateway = new MailerGatewayMemory();
   const signup = new Signup(accountDAO, mailerGateway);
   const getAccount = new GetAccount(accountDAO);
   const resultOfSignup = await signup.execute(input);
@@ -143,7 +143,7 @@ test('Deve criar a conta de um passageiro com spy', async function () {
   };
   const saveAccountSpy = sinon.spy(AccountDAODatabase.prototype, 'saveAccount');
   const accountDAO = new AccountDAODatabase();
-  const mailerGateway = new MailgerGatewayMemory();
+  const mailerGateway = new MailerGatewayMemory();
   const signup = new Signup(accountDAO, mailerGateway);
   const getAccount = new GetAccount(accountDAO);
   const resultOfSignup = await signup.execute(input);
@@ -153,4 +153,30 @@ test('Deve criar a conta de um passageiro com spy', async function () {
   expect(resultGetAccount.email).toBe(input.email);
   expect(resultGetAccount.cpf).toBe(input.cpf);
   expect(saveAccountSpy.calledWith(input)).toBe(true); // Use spy to confirm with saveAccount receive input.
+  saveAccountSpy.restore();
+});
+
+test("Deve criar uma conta para o passageiro com mock", async function () { // Mixes the stub with spy creating expectations in the object itself
+  const input = {
+    name: "John Doe",
+    email: `john.doe${Math.random()}@gmail.com`,
+    cpf: "87748248800",
+    isPassenger: true
+  };
+  const sendMock = sinon.mock(MailerGatewayMemory.prototype);
+  sendMock.expects("send").withArgs(input.email, "Welcome", "").once().callsFake(async function () {
+    console.log("abc");
+  }).resolves();
+  const accountDAO = new AccountDAODatabase();
+  const mailerGateway = new MailerGatewayMemory();
+  const signup = new Signup(accountDAO, mailerGateway);
+  const getAccount = new GetAccount(accountDAO);
+  const resultOfSignup = await signup.execute(input);
+  expect(resultOfSignup.accountId).toBeDefined();
+  const resultOfGetAccount = await getAccount.execute(resultOfSignup.accountId);
+  expect(resultOfGetAccount.name).toBe(input.name);
+  expect(resultOfGetAccount.email).toBe(input.email);
+  expect(resultOfGetAccount.cpf).toBe(input.cpf);
+  sendMock.verify();
+  sendMock.restore();
 });
