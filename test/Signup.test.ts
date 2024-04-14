@@ -156,17 +156,23 @@ test('Deve criar a conta de um passageiro com spy', async function () {
   saveAccountSpy.restore();
 });
 
-test("Deve criar uma conta para o passageiro com mock", async function () { // Mixes the stub with spy creating expectations in the object itself
+test('Deve criar uma conta para o passageiro com mock', async function () {
+  // Mixes the stub with spy creating expectations in the object itself
   const input = {
-    name: "John Doe",
+    name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
-    cpf: "87748248800",
-    isPassenger: true
+    cpf: '87748248800',
+    isPassenger: true,
   };
   const sendMock = sinon.mock(MailerGatewayMemory.prototype);
-  sendMock.expects("send").withArgs(input.email, "Welcome", "").once().callsFake(async function () {
-    console.log("abc");
-  }).resolves();
+  sendMock
+    .expects('send')
+    .withArgs(input.email, 'Welcome', '')
+    .once()
+    .callsFake(async function () {
+      console.log('abc');
+    })
+    .resolves();
   const accountDAO = new AccountDAODatabase();
   const mailerGateway = new MailerGatewayMemory();
   const signup = new Signup(accountDAO, mailerGateway);
