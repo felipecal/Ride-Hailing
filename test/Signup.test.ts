@@ -1,9 +1,9 @@
 import GetAccount from '../src/application/usecase/GetAccount';
 import Signup from '../src/application/usecase/Signup';
 import crypto from 'crypto';
-import { AccountDAODatabase, AcountDAOMemory } from '../src/infra/DAODatabase/AccountDAODatabase';
-import { MailerGatewayMemory } from '../src/infra/Gateway/MailerGateway';
 import sinon from 'sinon';
+import { MailerGatewayMemory } from '../src/infra/Gateway/MailerGateway';
+import { AccountRepositoryDatabase, AcountRepositoryMemory } from '../src/infra/Repository/AccountRepository';
 
 let signup: Signup;
 let getAccount: GetAccount;
@@ -11,7 +11,7 @@ let getAccount: GetAccount;
 //Integration test with unit test
 beforeEach(() => {
   // Implementation of fake (AccountDAOMemory and MailerGatewayMemory)
-  const accoutDAO = new AcountDAOMemory();
+  const accoutDAO = new AcountRepositoryMemory();
   const mailerGateway = new MailerGatewayMemory();
   signup = new Signup(accoutDAO, mailerGateway);
   getAccount = new GetAccount(accoutDAO);
@@ -92,7 +92,7 @@ test('Deve criar a conta de um motorista', async function () {
   expect(resultOfGetAccount.cpf).toBe(input.cpf);
 });
 
-test('Não deve criar a conta de um motorista com a palca inválida', async function () {
+test('Não deve criar a conta de um motorista com a placa inválida', async function () {
   const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -116,10 +116,10 @@ test('Deve criar a conta para um passageiro com sutb', async function () {
     cpf: '87748248800',
     isPassenger: true,
   };
-  const saveAccountStub = sinon.stub(AccountDAODatabase.prototype, 'saveAccount').resolves();
-  const getAccountByEmailStub = sinon.stub(AccountDAODatabase.prototype, 'getByEmail').resolves(undefined);
-  const getAccountByIdStub = sinon.stub(AccountDAODatabase.prototype, 'getById').resolves(input);
-  const accountDAO = new AccountDAODatabase();
+  const saveAccountStub = sinon.stub(AccountRepositoryDatabase.prototype, 'saveAccount').resolves();
+  const getAccountByEmailStub = sinon.stub(AccountRepositoryDatabase.prototype, 'getByEmail').resolves(undefined);
+  const getAccountByIdStub = sinon.stub(AccountRepositoryDatabase.prototype, 'getById').resolves(input);
+  const accountDAO = new AccountRepositoryDatabase();
   const mailerGateway = new MailerGatewayMemory();
   const signup = new Signup(accountDAO, mailerGateway);
   const getAccount = new GetAccount(accountDAO);
@@ -141,8 +141,8 @@ test('Deve criar a conta de um passageiro com spy', async function () {
     cpf: '87748248800',
     isPassenger: true,
   };
-  const saveAccountSpy = sinon.spy(AccountDAODatabase.prototype, 'saveAccount');
-  const accountDAO = new AccountDAODatabase();
+  const saveAccountSpy = sinon.spy(AccountRepositoryDatabase.prototype, 'saveAccount');
+  const accountDAO = new AccountRepositoryDatabase();
   const mailerGateway = new MailerGatewayMemory();
   const signup = new Signup(accountDAO, mailerGateway);
   const getAccount = new GetAccount(accountDAO);
@@ -173,7 +173,7 @@ test('Deve criar uma conta para o passageiro com mock', async function () {
       console.log('abc');
     })
     .resolves();
-  const accountDAO = new AccountDAODatabase();
+  const accountDAO = new AccountRepositoryDatabase();
   const mailerGateway = new MailerGatewayMemory();
   const signup = new Signup(accountDAO, mailerGateway);
   const getAccount = new GetAccount(accountDAO);

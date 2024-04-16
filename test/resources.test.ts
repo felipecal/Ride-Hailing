@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { AccountDAODatabase } from '../src/infra/DAODatabase/AccountDAODatabase';
+import { AccountRepositoryDatabase } from '../src/infra/Repository/AccountRepository';
 
 //Integration test
 
@@ -11,7 +11,7 @@ test('Deve salvar um registro de passageiro na tabela account e conulstar um reg
     cpf: '87748248800',
     isPassenger: true,
   };
-  const accountDAO = new AccountDAODatabase();
+  const accountDAO = new AccountRepositoryDatabase();
   await accountDAO.saveAccount(account);
   const accountBydId = await accountDAO.getById(account.accountId);
   expect(account.accountId).toBe(accountBydId.account_id);
@@ -29,7 +29,7 @@ test('Deve salvar um registro de motorista na tabela account e conulstar um regi
     isDriver: true,
     carPlate: 'JKJ3781',
   };
-  const accountDAO = new AccountDAODatabase();
+  const accountDAO = new AccountRepositoryDatabase();
   await accountDAO.saveAccount(account);
   const accountBydId = await accountDAO.getByEmail(account.email);
   expect(account.accountId).toBe(accountBydId.account_id);
