@@ -35,25 +35,24 @@ app.get('/getRideById/:rideId', async function (req, res) {
     const accountDAO = new AccountDAODatabase();
     const rideDAO = new RideDAODatabase();
     const getRide = new GetRide(accountDAO, rideDAO);
-    const resultOfGetRide = await getRide.execute(req.params.rideId)
-    res.json(resultOfGetRide)
+    const resultOfGetRide = await getRide.execute(req.params.rideId);
+    res.json(resultOfGetRide);
   } catch (error) {
-    res.status(422).json(`Some error ocurred in getRide ${error}`)
+    res.status(422).json(`Some error ocurred in getRide ${error}`);
   }
-})
+});
 
 app.post('/request_ride', async function (req, res) {
   try {
     const accountDAO = new AccountDAODatabase();
     const rideDAO = new RideDAODatabase();
     const requestRide = new RequestRide(accountDAO, rideDAO);
-    const resultOfRequestRide = await requestRide.execute(req.body)
-    res.json(resultOfRequestRide)
+    const resultOfRequestRide = await requestRide.execute(req.body);
+    res.json(resultOfRequestRide);
   } catch (error) {
-    res.status(422).json(`Some error ocurred in request_ride ${error}`)
+    res.status(422).json(`Some error ocurred in request_ride ${error}`);
   }
-})
-
+});
 
 app.listen(3000, () => {
   console.log(`Server running on port 3000 ⛇`);
