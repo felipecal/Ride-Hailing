@@ -1,25 +1,25 @@
-import { AccountDAO } from '../../infra/DAODatabase/AccountDAODatabase';
-import { RideDAO } from '../../infra/DAODatabase/RideDAODatabase';
+import { AccountRepository } from "../../infra/Repository/AccountRepository";
+import { RideRepository } from "../../infra/Repository/RideRepository";
 
 export default class GetRide {
   constructor(
-    readonly accountDAO: AccountDAO,
-    readonly rideDAO: RideDAO,
+    readonly accountDAO: AccountRepository,
+    readonly rideDAO: RideRepository,
   ) {}
 
   async execute(rideId: string): Promise<Output> {
     const resultOfGetRide = await this.rideDAO.getRideById(rideId);
     if (!resultOfGetRide) throw new Error('Ride not found');
-    const resultOfGetPassenger = await this.accountDAO.getById(resultOfGetRide.passenger_id);
+    const resultOfGetPassenger = await this.accountDAO.getById(resultOfGetRide.passengerId);
     if (!resultOfGetPassenger) throw new Error('Passenger not found');
     return {
       // TODO: change snake case to camel case after implement domain
-      passengerId: resultOfGetRide.passenger_id,
-      rideId: resultOfGetRide.ride_id,
-      fromLat: parseInt(resultOfGetRide.from_lat),
-      fromLong: parseInt(resultOfGetRide.from_long),
-      toLat: parseInt(resultOfGetRide.to_lat),
-      toLong: parseInt(resultOfGetRide.to_long),
+      passengerId: resultOfGetRide.passengerId,
+      rideId: resultOfGetRide.rideId,
+      fromLat: resultOfGetRide.fromLat,
+      fromLong: resultOfGetRide.fromLong,
+      toLat: resultOfGetRide.toLat,
+      toLong: resultOfGetRide.toLong,
       status: resultOfGetRide.status,
       date: resultOfGetRide.date,
       passengerName: resultOfGetPassenger.name,

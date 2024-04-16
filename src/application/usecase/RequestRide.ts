@@ -1,25 +1,24 @@
-import { AccountDAO } from '../../infra/DAODatabase/AccountDAODatabase';
-import { RideDAODatabase } from '../../infra/DAODatabase/RideDAODatabase';
+import { AccountRepository } from '../../infra/Repository/AccountRepository';
 import crypto from 'crypto';
+import { RideRepository } from '../../infra/Repository/RideRepository';
+import Ride from '../../domain/Ride';
 
 export default class RequestRide {
   constructor(
-    readonly accountDAO: AccountDAO,
-    readonly rideDAO: RideDAODatabase,
+    readonly accountDAO: AccountRepository,
+    readonly rideDAO: RideRepository,
   ) {}
 
   async execute(input: Input): Promise<Output> {
     const resultOfGetAccount = await this.accountDAO.getById(input.passengerId);
+    if (!resultOfGetAccount.isPassenger) throw new Error('Not is a passenger');
     if (!resultOfGetAccount) throw new Error('Account not exists');
-    if (!resultOfGetAccount.is_passenger) throw new Error('Not is a passenger');
-    input.rideId = crypto.randomUUID();
-    input.status = 'requested';
-    input.date = new Date();
-    const [activeRide] = await this.rideDAO.getActivesRidesByPassengerID(input.passengerId);
+    const activeRide = await this.rideDAO.getActivesRidesByPassengerID(input.passengerId);
     if (activeRide) throw new Error('Passenger already has a active ride');
-    await this.rideDAO.saveRide(input);
+    const ride = Ride.create(input.passengerId, input.fromLat, input.fromLong, input.toLat, input.toLong)
+    await this.rideDAO.saveRide(ride);
     return {
-      rideId: input.rideId,
+      rideId: ride.rideId,
     };
   }
 }

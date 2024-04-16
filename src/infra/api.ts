@@ -2,16 +2,16 @@ import express from 'express';
 import Signup from '../application/usecase/Signup';
 import GetAccount from '../application/usecase/GetAccount';
 import { MailerGatewayMemory } from './Gateway/MailerGateway';
-import { AccountDAODatabase } from './DAODatabase/AccountDAODatabase';
-import { RideDAODatabase } from './DAODatabase/RideDAODatabase';
 import RequestRide from '../application/usecase/RequestRide';
 import GetRide from '../application/usecase/GetRide';
+import { AccountRepositoryDatabase } from './Repository/AccountRepository';
+import { RideRepositoryDatabase } from './Repository/RideRepository';
 const app = express();
 app.use(express.json());
 
 app.post('/signup', async function (req, res) {
   try {
-    const accountDAO = new AccountDAODatabase();
+    const accountDAO = new AccountRepositoryDatabase();
     const mailerGateway = new MailerGatewayMemory();
     const signup = new Signup(accountDAO, mailerGateway);
     const resultOfSignup = await signup.execute(req.body);
@@ -24,7 +24,7 @@ app.post('/signup', async function (req, res) {
 });
 
 app.get('/getAccountById/:accountId', async function (req, res) {
-  const accountDAO = new AccountDAODatabase();
+  const accountDAO = new AccountRepositoryDatabase();
   const getAccount = new GetAccount(accountDAO);
   const resultOfGetAccount = await getAccount.execute(req.params.accountId);
   res.json(resultOfGetAccount);
@@ -32,8 +32,8 @@ app.get('/getAccountById/:accountId', async function (req, res) {
 
 app.get('/getRideById/:rideId', async function (req, res) {
   try {
-    const accountDAO = new AccountDAODatabase();
-    const rideDAO = new RideDAODatabase();
+    const accountDAO = new AccountRepositoryDatabase();
+    const rideDAO = new RideRepositoryDatabase();
     const getRide = new GetRide(accountDAO, rideDAO);
     const resultOfGetRide = await getRide.execute(req.params.rideId);
     res.json(resultOfGetRide);
@@ -44,8 +44,8 @@ app.get('/getRideById/:rideId', async function (req, res) {
 
 app.post('/request_ride', async function (req, res) {
   try {
-    const accountDAO = new AccountDAODatabase();
-    const rideDAO = new RideDAODatabase();
+    const accountDAO = new AccountRepositoryDatabase();
+    const rideDAO = new RideRepositoryDatabase();
     const requestRide = new RequestRide(accountDAO, rideDAO);
     const resultOfRequestRide = await requestRide.execute(req.body);
     res.json(resultOfRequestRide);

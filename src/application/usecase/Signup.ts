@@ -1,40 +1,22 @@
-import pgp from 'pg-promise';
-import crypto from 'crypto';
-import { validateCpf } from '../utils/validateCpf';
-import { AccountDAO } from '../../infra/DAODatabase/AccountDAODatabase';
 import { MailerGateway } from '../../infra/Gateway/MailerGateway';
+import Account from '../../domain/Account';
+import { AccountRepository } from '../../infra/Repository/AccountRepository';
 
 export default class Signup {
   constructor(
-    readonly accountDAO: AccountDAO,
+    readonly accountDAO: AccountRepository,
     readonly mailerGateway: MailerGateway,
   ) {}
 
-  async execute(input: Input) {
-    input.accountId = crypto.randomUUID();
-    const account = await this.accountDAO.getByEmail(input.email);
-    if (account) throw new Error(`Account already exists`);
-    if (!this.validateName(input.name)) throw new Error(`Invalid name`);
-    if (!this.validateEmail(input.email)) throw new Error(`Invalid email`);
-    if (!validateCpf(input.cpf)) throw new Error(`Invalid cpf`);
-    if (input.isDriver && !this.validateCarPlate(input.carPlate)) throw new Error(`Invalid car plate`);
-    await this.accountDAO.saveAccount(input);
+  async execute(input: any) {
+    const resultIfExistsAccount = await this.accountDAO.getByEmail(input.email);
+    if (resultIfExistsAccount) throw new Error(`Account already exists`);
+    const account = Account.create(input.name, input.email, input.cpf, input.carPlate, input.isPassenger, input.isDriver)
+    await this.accountDAO.saveAccount(account);
     await this.mailerGateway.send(input.email, 'Welcome', '');
     return {
-      accountId: input.accountId,
+      accountId: account.accountId,
     };
-  }
-
-  private validateName(name: string) {
-    return name.match(/[a-zA-Z] [a-zA-Z]+/);
-  }
-
-  private validateEmail(email: string) {
-    return email.match(/^(.+)@(.+)$/);
-  }
-
-  private validateCarPlate(carPlate: string | undefined) {
-    if (carPlate) return carPlate.match(/[A-Z]{3}[0-9]{4}/);
   }
 }
 
@@ -43,7 +25,7 @@ type Input = {
   name: string;
   email: string;
   cpf: string;
-  carPlate?: string;
-  isPassenger?: boolean;
-  isDriver?: boolean;
+  carPlate: string;
+  isPassenger: boolean;
+  isDriver: boolean;
 };
