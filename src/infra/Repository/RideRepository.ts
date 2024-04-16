@@ -1,12 +1,12 @@
 import pgp from 'pg-promise';
-export interface RideDAO {
+export interface RideRepository {
   getRideById(rideId: string): Promise<any>;
   getActivesRidesByPassengerID(email: string): Promise<any>;
   saveRide(account: any): Promise<void>;
 }
 
 // Driven/Port
-export class RideDAODatabase implements RideDAO {
+export class RideRepositoryDatabase implements RideRepository {
   // Driven/Adapter
   async getRideById(rideId: string) {
     const connection = pgp()('cccat16-postgres://postgres:123456@localhost:5432');
@@ -33,7 +33,7 @@ export class RideDAODatabase implements RideDAO {
 }
 
 // Driven/Adapter
-export class AcountDAOMemory implements RideDAO {
+export class AcountRepositoryMemory implements RideRepository {
   rides: any[];
 
   constructor() {

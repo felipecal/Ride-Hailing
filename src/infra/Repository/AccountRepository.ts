@@ -1,12 +1,13 @@
 import pgp from 'pg-promise';
-export interface AccountDAO {
-  getByEmail(email: string): Promise<any>;
-  getById(accountId: string): Promise<any>;
+import Account from '../../domain/Account';
+export interface AccountRepository {
+  getByEmail(email: string): Promise<Account | undefined>;
+  getById(accountId: string): Promise<Account>;
   saveAccount(account: any): Promise<void>;
 }
 
 // Driven/Port
-export class AccountDAODatabase implements AccountDAO {
+export class AccountRepositoryDatabase implements AccountRepository {
   async getByEmail(email: string) {
     const connection = pgp()('cccat16-postgres://postgres:123456@localhost:5432');
     const [account] = await connection.query('select * from cccat16.account where email = $1', [email]);
@@ -33,7 +34,7 @@ export class AccountDAODatabase implements AccountDAO {
 }
 
 // Driven/Adapter
-export class AcountDAOMemory implements AccountDAO {
+export class AcountRepositoryMemory implements AccountRepository {
   accounts: any[];
 
   constructor() {
