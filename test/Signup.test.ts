@@ -2,8 +2,9 @@ import GetAccount from '../src/application/usecase/GetAccount';
 import Signup from '../src/application/usecase/Signup';
 import crypto from 'crypto';
 import sinon from 'sinon';
-import { MailerGatewayMemory } from '../src/infra/Gateway/MailerGateway';
-import { AccountRepositoryDatabase, AcountRepositoryMemory } from '../src/infra/Repository/AccountRepository';
+import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
+import { AccountRepositoryDatabase, AcountRepositoryMemory } from '../src/infra/repository/AccountRepository';
+import { PgPromiseAdapter } from '../src/infra/database/databaseConnection';
 
 let signup: Signup;
 let getAccount: GetAccount;
@@ -109,7 +110,7 @@ test('Não deve pegar a conta com o id errado', async function () {
   await expect(getAccount.execute(randomAccountId)).rejects.toThrow(new Error('Account not found'));
 });
 
-test('Deve criar a conta para um passageiro com sutb', async function () {
+test('Deve criar a conta para um passageiro com stub', async function () {
   const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -118,8 +119,9 @@ test('Deve criar a conta para um passageiro com sutb', async function () {
   };
   const saveAccountStub = sinon.stub(AccountRepositoryDatabase.prototype, 'saveAccount').resolves();
   const getAccountByEmailStub = sinon.stub(AccountRepositoryDatabase.prototype, 'getByEmail').resolves(undefined);
-  const getAccountByIdStub = sinon.stub(AccountRepositoryDatabase.prototype, 'getById').resolves(input);
-  const accountDAO = new AccountRepositoryDatabase();
+  // const getAccountByIdStub = sinon.stub(AccountRepositoryDatabase.prototype, 'getById').resolves(input);
+  const connection = new PgPromiseAdapter()
+  const accountDAO = new AccountRepositoryDatabase(connection);
   const mailerGateway = new MailerGatewayMemory();
   const signup = new Signup(accountDAO, mailerGateway);
   const getAccount = new GetAccount(accountDAO);
@@ -131,7 +133,8 @@ test('Deve criar a conta para um passageiro com sutb', async function () {
   expect(resultGetAccount.cpf).toBe(input.cpf);
   saveAccountStub.restore();
   getAccountByEmailStub.restore();
-  getAccountByIdStub.restore();
+  // getAccountByIdStub.restore();
+  connection.close();
 });
 
 test('Deve criar a conta de um passageiro com spy', async function () {
@@ -142,7 +145,8 @@ test('Deve criar a conta de um passageiro com spy', async function () {
     isPassenger: true,
   };
   const saveAccountSpy = sinon.spy(AccountRepositoryDatabase.prototype, 'saveAccount');
-  const accountDAO = new AccountRepositoryDatabase();
+  const connection = new PgPromiseAdapter()
+  const accountDAO = new AccountRepositoryDatabase(connection);
   const mailerGateway = new MailerGatewayMemory();
   const signup = new Signup(accountDAO, mailerGateway);
   const getAccount = new GetAccount(accountDAO);
@@ -154,6 +158,7 @@ test('Deve criar a conta de um passageiro com spy', async function () {
   expect(resultGetAccount.cpf).toBe(input.cpf);
   expect(saveAccountSpy.calledWith(input)).toBe(true); // Use spy to confirm with saveAccount receive input.
   saveAccountSpy.restore();
+  connection.close();
 });
 
 test('Deve criar uma conta para o passageiro com mock', async function () {
@@ -173,7 +178,8 @@ test('Deve criar uma conta para o passageiro com mock', async function () {
       console.log('abc');
     })
     .resolves();
-  const accountDAO = new AccountRepositoryDatabase();
+  const connection = new PgPromiseAdapter()
+  const accountDAO = new AccountRepositoryDatabase(connection);
   const mailerGateway = new MailerGatewayMemory();
   const signup = new Signup(accountDAO, mailerGateway);
   const getAccount = new GetAccount(accountDAO);
@@ -185,4 +191,5 @@ test('Deve criar uma conta para o passageiro com mock', async function () {
   expect(resultOfGetAccount.cpf).toBe(input.cpf);
   sendMock.verify();
   sendMock.restore();
+  connection.close();
 });

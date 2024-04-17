@@ -1,21 +1,24 @@
 import GetRide from "../src/application/usecase/GetRide"
 import RequestRide from "../src/application/usecase/RequestRide"
 import Signup from "../src/application/usecase/Signup";
-import { MailerGatewayMemory } from "../src/infra/Gateway/MailerGateway";
-import { AccountRepositoryDatabase } from "../src/infra/Repository/AccountRepository";
-import { RideRepositoryDatabase } from "../src/infra/Repository/RideRepository";
+import { PgPromiseAdapter } from "../src/infra/database/databaseConnection";
+import { MailerGatewayMemory } from "../src/infra/gateway/MailerGateway";
+import { AccountRepositoryDatabase } from "../src/infra/repository/AccountRepository";
+import { RideRepositoryDatabase } from "../src/infra/repository/RideRepository";
 
 let signup: Signup;
 let requestRide: RequestRide;
 let getRide: GetRide;
 
 beforeEach(() => {
-  const accountDAO = new AccountRepositoryDatabase();
-  const rideDAO = new RideRepositoryDatabase();
+  const connection = new PgPromiseAdapter()
+  const accountDAO = new AccountRepositoryDatabase(connection);
+  const rideDAO = new RideRepositoryDatabase(connection);
   const mailerGateway = new MailerGatewayMemory()
   requestRide = new RequestRide(accountDAO, rideDAO);
   getRide = new GetRide(accountDAO, rideDAO);
   signup = new Signup(accountDAO, mailerGateway)
+  connection.close();
 })
 
 test('Deve solicitar uma nova corrida', async function () {
