@@ -1,5 +1,5 @@
-import { AccountRepository } from "../../infra/Repository/AccountRepository";
-import { RideRepository } from "../../infra/Repository/RideRepository";
+import { AccountRepository } from "../../infra/repository/AccountRepository";
+import { RideRepository } from "../../infra/repository/RideRepository";
 
 export default class GetRide {
   constructor(
@@ -13,7 +13,6 @@ export default class GetRide {
     const resultOfGetPassenger = await this.accountDAO.getById(resultOfGetRide.passengerId);
     if (!resultOfGetPassenger) throw new Error('Passenger not found');
     return {
-      // TODO: change snake case to camel case after implement domain
       passengerId: resultOfGetRide.passengerId,
       rideId: resultOfGetRide.rideId,
       fromLat: resultOfGetRide.fromLat,

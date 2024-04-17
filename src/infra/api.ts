@@ -1,11 +1,11 @@
 import express from 'express';
 import Signup from '../application/usecase/Signup';
 import GetAccount from '../application/usecase/GetAccount';
-import { MailerGatewayMemory } from './Gateway/MailerGateway';
+import { MailerGatewayMemory } from './gateway/MailerGateway';
 import RequestRide from '../application/usecase/RequestRide';
 import GetRide from '../application/usecase/GetRide';
-import { AccountRepositoryDatabase } from './Repository/AccountRepository';
-import { RideRepositoryDatabase } from './Repository/RideRepository';
+import { AccountRepositoryDatabase } from './repository/AccountRepository';
+import { RideRepositoryDatabase } from './repository/RideRepository';
 const app = express();
 app.use(express.json());
 
