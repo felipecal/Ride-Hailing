@@ -3,7 +3,7 @@ import Account from '../../domain/Account';
 export interface AccountRepository {
   getByEmail(email: string): Promise<Account | undefined>;
   getById(accountId: string): Promise<Account>;
-  saveAccount(account: any): Promise<void>;
+  saveAccount(account: Account): Promise<void>;
 }
 
 // Driven/Port
@@ -11,16 +11,15 @@ export class AccountRepositoryDatabase implements AccountRepository {
   async getByEmail(email: string) {
     const connection = pgp()('cccat16-postgres://postgres:123456@localhost:5432');
     const [account] = await connection.query('select * from cccat16.account where email = $1', [email]);
-    await connection.$pool.end();
-    return account;
+    if(!account) return;
+    return Account.restore(account.account_id, account.name, account.email, account.cpf, account.car_plate, account.is_passenger, account.is_driver)
   }
 
   // Driven/Adapter
   async getById(accountId: string) {
     const connection = pgp()('cccat16-postgres://postgres:123456@localhost:5432');
     const [account] = await connection.query('select * from cccat16.account where account_id = $1', [accountId]);
-    await connection.$pool.end();
-    return account;
+    return Account.restore(account.account_id, account.name, account.email, account.cpf, account.car_plate, account.is_passenger, account.is_driver)
   }
 
   async saveAccount(account: any) {
