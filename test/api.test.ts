@@ -14,7 +14,7 @@ test('Deve criar uma conta para o passageiro e consultar conta', async function 
   };
   const resultSignUp = await axios.post('http://localhost:3000/signup', input);
   const resultOfGetUser = await axios.get(`http://localhost:3000/getAccountById/${resultSignUp.data.accountId}`);
-  expect(resultSignUp.data.accountId).toBe(resultOfGetUser.data.account_id);
+  expect(resultSignUp.data.accountId).toBe(resultOfGetUser.data.accountId);
   expect(input.name).toBe(resultOfGetUser.data.name);
   expect(input.email).toBe(resultOfGetUser.data.email);
   expect(input.cpf).toBe(resultOfGetUser.data.cpf);
