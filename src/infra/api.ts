@@ -46,7 +46,6 @@ app.get('/getRideById/:rideId', async function (req, res) {
 
 app.post('/request_ride', async function (req, res) {
   try {
-    const connection = new PgPromiseAdapter();
     const accountDAO = new AccountRepositoryDatabase(connection);
     const rideDAO = new RideRepositoryDatabase(connection);
     const requestRide = new RequestRide(accountDAO, rideDAO);
