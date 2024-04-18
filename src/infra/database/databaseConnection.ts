@@ -18,6 +18,6 @@ export class PgPromiseAdapter implements DatabaseConnection {
     return this.connection.query(statement, params);
   }
   close(): Promise<void> {
-    return this.connection.close();
+    return this.connection.$pool.end();
   }
 }
