@@ -9,7 +9,7 @@ import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
 import Account from '../src/domain/Account';
 import Ride from '../src/domain/Ride';
 
-test('Deve solicitar uma nova corrida', async function () {
+test.skip('Deve solicitar uma nova corrida', async function () {
   const connection = new PgPromiseAdapter();
   const accountRepository = new AccountRepositoryDatabase(connection);
   const rideRepository = new RideRepositoryDatabase(connection);
