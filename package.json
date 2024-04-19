@@ -1,5 +1,6 @@
 {
   "name": "Ride-Hailing",
+  "description": "This is a repository with the application of the knowledge I acquired in the Clean Code and Clean Architecture course by Rodrigo Branas",
   "version": "1.0.0",
   "main": "src/infra/api.ts",
   "license": "MIT",
