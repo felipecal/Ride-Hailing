@@ -9,21 +9,6 @@ import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
 import Account from '../src/domain/Account';
 import Ride from '../src/domain/Ride';
 
-// let signup: Signup;
-// let requestRide: RequestRide;
-// let getRide: GetRide;
-
-// beforeEach(() => {
-//   const connection = new PgPromiseAdapter()
-//   const accountDAO = new AccountRepositoryDatabase(connection);
-//   const rideDAO = new RideRepositoryDatabase(connection);
-//   const mailerGateway = new MailerGatewayMemory()
-//   requestRide = new RequestRide(accountDAO, rideDAO);
-//   getRide = new GetRide(accountDAO, rideDAO);
-//   signup = new Signup(accountDAO, mailerGateway)
-//   await connection.close();
-// })
-
 test('Deve solicitar uma nova corrida', async function () {
   const connection = new PgPromiseAdapter();
   const accountRepository = new AccountRepositoryDatabase(connection);
