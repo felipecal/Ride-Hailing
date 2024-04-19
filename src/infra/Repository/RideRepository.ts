@@ -9,17 +9,20 @@ export interface RideRepository {
 
 // Driven/Port
 export class RideRepositoryDatabase implements RideRepository {
-  constructor(readonly connection: DatabaseConnection){}
+  constructor(readonly connection: DatabaseConnection) {}
   // Driven/Adapter
   async getRideById(rideId: string) {
     const [ride] = await this.connection.query('select * from cccat16.ride where ride_id = $1', [rideId]);
-    return Ride.restore(ride.ride_id, ride.passenger_id, ride.from_late, ride.from_long, ride.to_lat, ride.to_long, ride.status, ride.date)
+    return Ride.restore(ride.ride_id, ride.passenger_id, ride.from_late, ride.from_long, ride.to_lat, ride.to_long, ride.status, ride.date);
   }
 
   async getActivesRidesByPassengerID(passengerId: string) {
-    const [ride] = await this.connection.query("select * from cccat16.ride where passenger_id = $1 and status = 'requested' and status <> 'completed'", [passengerId]);
-    if(!ride) return;
-    return Ride.restore(ride.ride_id, ride.passenger_id, ride.from_late, ride.from_long, ride.to_lat, ride.to_long, ride.status, ride.date)
+    const [ride] = await this.connection.query(
+      "select * from cccat16.ride where passenger_id = $1 and status = 'requested' and status <> 'completed'",
+      [passengerId],
+    );
+    if (!ride) return;
+    return Ride.restore(ride.ride_id, ride.passenger_id, ride.from_late, ride.from_long, ride.to_lat, ride.to_long, ride.status, ride.date);
   }
 
   async saveRide(ride: Ride) {

@@ -1,5 +1,5 @@
-import { AccountRepository } from "../../infra/repository/AccountRepository";
-import { RideRepository } from "../../infra/repository/RideRepository";
+import { AccountRepository } from '../../infra/repository/AccountRepository';
+import { RideRepository } from '../../infra/repository/RideRepository';
 
 export default class GetRide {
   constructor(
@@ -22,7 +22,7 @@ export default class GetRide {
       status: resultOfGetRide.status,
       date: resultOfGetRide.date,
       passengerName: resultOfGetPassenger.name,
-      passengerEmail: resultOfGetPassenger.email
+      passengerEmail: resultOfGetPassenger.email,
     };
   }
 }
@@ -37,5 +37,5 @@ type Output = {
   status: string;
   date: Date;
   passengerName: string;
-  passengerEmail: string
+  passengerEmail: string;
 };

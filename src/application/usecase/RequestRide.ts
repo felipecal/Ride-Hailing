@@ -15,7 +15,7 @@ export default class RequestRide {
     if (!resultOfGetAccount) throw new Error('Account not exists');
     const activeRide = await this.rideDAO.getActivesRidesByPassengerID(input.passengerId);
     if (activeRide) throw new Error('Passenger already has a active ride');
-    const ride = Ride.create(input.passengerId, input.fromLat, input.fromLong, input.toLat, input.toLong)
+    const ride = Ride.create(input.passengerId, input.fromLat, input.fromLong, input.toLat, input.toLong);
     await this.rideDAO.saveRide(ride);
     return {
       rideId: ride.rideId,

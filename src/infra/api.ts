@@ -10,7 +10,7 @@ import { PgPromiseAdapter } from './database/databaseConnection';
 const app = express();
 app.use(express.json());
 
-const connection = new PgPromiseAdapter()
+const connection = new PgPromiseAdapter();
 app.post('/signup', async function (req, res) {
   try {
     const accountDAO = new AccountRepositoryDatabase(connection);
