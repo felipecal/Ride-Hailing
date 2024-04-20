@@ -23,6 +23,6 @@ export default class Account {
   }
 
   static restore(accountId: string, name: string, email: string, cpf: string, carPlate: string, isPassenger: boolean, isDriver: boolean) {
-    return new Account(accountId, name, email, cpf, carPlate, isDriver, isDriver);
+    return new Account(accountId, name, email, cpf, carPlate, isPassenger, isDriver);
   }
 }
