@@ -9,7 +9,7 @@ import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
 import Account from '../src/domain/Account';
 import Ride from '../src/domain/Ride';
 
-test.skip('Deve solicitar uma nova corrida', async function () {
+test('Deve solicitar uma nova corrida', async function () {
   const connection = new PgPromiseAdapter();
   const accountRepository = new AccountRepositoryDatabase(connection);
   const rideRepository = new RideRepositoryDatabase(connection);
@@ -49,7 +49,7 @@ test('Não deve poder solicitar uma nova corrida se o passageiro tiver outra cor
   const rideRepository = new RideRepositoryDatabase(connection);
   const mailerGateway = new MailerGatewayMemory();
   const signup = new Signup(accountRepository, mailerGateway);
-  const account = Account.create('John Doe', `john.doe${Math.random()}@gmail.com`, '87748248800', 'KAL9911', false, true);
+  const account = Account.create('John Doe', `john.doe${Math.random()}@gmail.com`, '87748248800', '', true, false);
   const resultSignup = await signup.execute(account);
   const requestRide = new RequestRide(accountRepository, rideRepository);
   const ride = Ride.create(resultSignup.accountId, -27.584905257808835, -48.545022195325124, -27.496887588317275, -48.522234807851476);
