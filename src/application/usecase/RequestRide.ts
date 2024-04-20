@@ -11,8 +11,8 @@ export default class RequestRide {
 
   async execute(input: Input): Promise<Output> {
     const resultOfGetAccount = await this.accountDAO.getById(input.passengerId);
-    if (!resultOfGetAccount.isPassenger) throw new Error('Not is a passenger');
     if (!resultOfGetAccount) throw new Error('Account not exists');
+    if (!resultOfGetAccount.isPassenger) throw new Error('Not is a passenger');
     const activeRide = await this.rideDAO.getActivesRidesByPassengerID(input.passengerId);
     if (activeRide) throw new Error('Passenger already has a active ride');
     const ride = Ride.create(input.passengerId, input.fromLat, input.fromLong, input.toLat, input.toLong);
