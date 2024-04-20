@@ -133,7 +133,7 @@ test('Deve criar a conta para um passageiro com stub', async function () {
   await connection.close();
 });
 
-test.skip('Deve criar a conta de um passageiro com spy', async function () {
+test('Deve criar a conta de um passageiro com spy', async function () {
   const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -169,7 +169,7 @@ test('Deve criar uma conta para o passageiro com mock', async function () {
   const sendMock = sinon.mock(MailerGatewayMemory.prototype);
   sendMock
     .expects('send')
-    .withArgs(input.email, 'Welcome', '')
+    .withArgs(input.email, 'Welcome!', '')
     .once()
     .callsFake(async function () {
       console.log('abc');
