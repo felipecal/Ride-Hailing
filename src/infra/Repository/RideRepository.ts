@@ -1,6 +1,5 @@
-import pgp from 'pg-promise';
 import Ride from '../../domain/Ride';
-import DatabaseConnection from '../database/databaseConnection';
+import DatabaseConnection from '../database/DatabaseConnection';
 export interface RideRepository {
   getRideById(rideId: string): Promise<Ride>;
   getActivesRidesByPassengerID(email: string): Promise<Ride | undefined>;
