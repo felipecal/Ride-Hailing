@@ -29,5 +29,5 @@ test('Não deve criar uma conta para o passageiro com nome invalido', async func
   };
   const resultSignUp = await axios.post('http://localhost:3000/signup', input);
   expect(resultSignUp.status).toBe(422);
-  expect(resultSignUp.data).toEqual({ error: 'Some error ocurred in signup Error: Invalid name' });
+  expect(resultSignUp.data).toEqual({ message: 'Invalid name' });
 });
