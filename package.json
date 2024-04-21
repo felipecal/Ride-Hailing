@@ -2,11 +2,11 @@
   "name": "Ride-Hailing",
   "description": "This is a repository with the application of the knowledge I acquired in the Clean Code and Clean Architecture course by Rodrigo Branas",
   "version": "1.0.0",
-  "main": "src/infra/api.ts",
+  "main": "./src/main_api.ts",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/infra/api.ts",
-    "dev": "ts-node-dev src/infra/api.ts",
+    "start": "ts-node src/main_api.ts",
+    "dev": "ts-node-dev src/main_api.ts",
     "test": "npx jest",
     "format": "prettier --write ."
   },
