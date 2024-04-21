@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import sinon from 'sinon';
 import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
 import { AccountRepositoryDatabase, AcountRepositoryMemory } from '../src/infra/repository/AccountRepository';
-import { PgPromiseAdapter } from '../src/infra/database/databaseConnection';
+import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
 import Account from '../src/domain/Account';
 
 let signup: Signup;

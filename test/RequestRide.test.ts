@@ -2,7 +2,7 @@ import { AccountRepository } from './../src/infra/repository/AccountRepository';
 import GetRide from '../src/application/usecase/GetRide';
 import RequestRide from '../src/application/usecase/RequestRide';
 import Signup from '../src/application/usecase/Signup';
-import { PgPromiseAdapter } from '../src/infra/database/databaseConnection';
+import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
 import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
 import { AccountRepositoryDatabase } from '../src/infra/repository/AccountRepository';
 import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
