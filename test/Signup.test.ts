@@ -20,13 +20,18 @@ beforeEach(() => {
 });
 
 test('Deve criar a conta de um passageiro', async function () {
-  const account = Account.create('Jhon Doe', `john.doe${Math.random()}@gmail.com`, '87748248800', '', true, false);
-  const resultOfSignup = await signup.execute(account);
+  const input = {
+    name: 'John Doe',
+    email: `john.doe${Math.random()}@gmail.com`,
+    cpf: '87748248800',
+    isPassenger: true,
+  };
+  const resultOfSignup = await signup.execute(input);
   const resultOfGetAccount = await getAccount.execute(resultOfSignup.accountId);
   expect(resultOfSignup.accountId).toBeDefined();
-  expect(resultOfGetAccount.name).toBe(account.name);
-  expect(resultOfGetAccount.email).toBe(account.email);
-  expect(resultOfGetAccount.cpf).toBe(account.cpf);
+  expect(resultOfGetAccount.name).toBe(input.name);
+  expect(resultOfGetAccount.email).toBe(input.email);
+  expect(resultOfGetAccount.cpf).toBe(input.cpf);
 });
 
 test('Nao deve criar a conta de um passageiro com o nome inválido', async function () {
@@ -59,7 +64,7 @@ test('Nao deve criar a conta de um passageiro com o cpf inválido', async functi
   await expect(signup.execute(input)).rejects.toThrow(new Error('Invalid cpf'));
 });
 
-test('Nao deve criar a conta de um passageiro com a conta já existente', async function () {
+test("Não deve criar uma conta para o passageiro se a conta já existe", async function () {
   const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -67,7 +72,7 @@ test('Nao deve criar a conta de um passageiro com a conta já existente', async 
     isPassenger: true,
   };
   await signup.execute(input);
-  await expect(signup.execute(input)).rejects.toThrow(new Error('Account already exists'));
+	await expect(() => signup.execute(input)).rejects.toThrow(new Error("Account already exists"));
 });
 
 test('Deve criar a conta de um motorista', async function () {
