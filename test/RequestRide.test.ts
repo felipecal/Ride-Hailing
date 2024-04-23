@@ -6,8 +6,8 @@ import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
 import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
 import { AccountRepositoryDatabase } from '../src/infra/repository/AccountRepository';
 import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
-import Account from '../src/domain/Account';
-import Ride from '../src/domain/Ride';
+import Account from '../src/domain/entity/Account';
+import Ride from '../src/domain/entity/Ride';
 
 test('Deve solicitar uma nova corrida', async function () {
   const connection = new PgPromiseAdapter();

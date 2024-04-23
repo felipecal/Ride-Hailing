@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
 import { AccountRepositoryDatabase, AcountRepositoryMemory } from '../src/infra/repository/AccountRepository';
 import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
-import Account from '../src/domain/Account';
+import Account from '../src/domain/entity/Account';
 
 let signup: Signup;
 let getAccount: GetAccount;

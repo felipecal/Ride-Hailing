@@ -1,6 +1,6 @@
 import { AccountRepositoryDatabase } from '../src/infra/repository/AccountRepository';
 import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
-import Account from '../src/domain/Account';
+import Account from '../src/domain/entity/Account';
 
 //Integration test
 

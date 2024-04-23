@@ -1,10 +1,10 @@
 // Aggregate, Aggregate Root <AR>, Entity
 
 import crypto from "crypto";
-import Name from "./vo/Name";
-import Email from "./vo/Email";
-import Cpf from "./vo/Cpf";
-import CarPlate from "./vo/CarPlate";
+import Name from "../vo/Name";
+import Email from "../vo/Email";
+import Cpf from "../vo/Cpf";
+import CarPlate from "../vo/CarPlate";
 
 export default class Account {
 

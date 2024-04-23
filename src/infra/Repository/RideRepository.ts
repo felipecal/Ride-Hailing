@@ -1,4 +1,4 @@
-import Ride from '../../domain/Ride';
+import Ride from '../../domain/entity/Ride';
 import DatabaseConnection from '../database/DatabaseConnection';
 export interface RideRepository {
   getRideById(rideId: string): Promise<Ride>;

@@ -1,7 +1,6 @@
 import { AccountRepository } from '../../infra/repository/AccountRepository';
-import crypto from 'crypto';
 import { RideRepository } from '../../infra/repository/RideRepository';
-import Ride from '../../domain/Ride';
+import Ride from '../../domain/entity/Ride';
 
 export default class RequestRide {
   constructor(
