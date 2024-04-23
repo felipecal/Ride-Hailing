@@ -1,28 +1,44 @@
-import { validateCpf } from './validateCpf';
 import crypto from 'crypto';
+import Name from './Name';
+import Email from './Email';
+import Cpf from './Cpf';
+import CarPlate from './CarPlate';
 
 export default class Account {
   private constructor(
     readonly accountId: string,
-    readonly name: string,
-    readonly email: string,
-    readonly cpf: string,
-    readonly carPlate: string,
+    private name: Name,
+    private email: Email,
+    private cpf: Cpf,
+    private carPlate: CarPlate,
     readonly isPassenger: boolean,
     readonly isDriver: boolean,
   ) {
-    if (!this.name.match(/[a-zA-Z] [a-zA-Z]+/)) throw new Error(`Invalid name`);
-    if (!this.email.match(/^(.+)@(.+)$/)) throw new Error(`Invalid email`);
-    if (!validateCpf(this.cpf)) throw new Error(`Invalid cpf`);
-    if (this.isDriver && this.carPlate && !this.carPlate.match(/[A-Z]{3}[0-9]{4}/)) throw new Error('Invalid car plate');
   }
 
   static create(name: string, email: string, cpf: string, carPlate: string, isPassenger: boolean, isDriver: boolean) {
     const accountId = crypto.randomUUID();
-    return new Account(accountId, name, email, cpf, carPlate, isPassenger, isDriver);
+    return new Account(accountId, new Name(name), new Email(email), new Cpf(cpf), new CarPlate(carPlate), isPassenger, isDriver);
   }
 
   static restore(accountId: string, name: string, email: string, cpf: string, carPlate: string, isPassenger: boolean, isDriver: boolean) {
-    return new Account(accountId, name, email, cpf, carPlate, isPassenger, isDriver);
+    return new Account(accountId, new Name(name), new Email(email), new Cpf(cpf), new CarPlate(carPlate), isPassenger, isDriver);
+  }
+
+  setName(name: string) {
+    this.name = new Name(name)
+  }
+
+  getName() {
+    return this.name.getValue()
+  }
+  getEmail() {
+    return this.email.getValue()
+  }
+  getCpf() {
+    return this.cpf.getValue()
+  }
+  getCarPlate() {
+    return this.carPlate.getValue()
   }
 }
