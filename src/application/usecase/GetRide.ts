@@ -21,8 +21,8 @@ export default class GetRide {
       toLong: resultOfGetRide.toLong,
       status: resultOfGetRide.status,
       date: resultOfGetRide.date,
-      passengerName: resultOfGetPassenger.name,
-      passengerEmail: resultOfGetPassenger.email,
+      passengerName: resultOfGetPassenger.getName(),
+      passengerEmail: resultOfGetPassenger.getEmail(),
     };
   }
 }
