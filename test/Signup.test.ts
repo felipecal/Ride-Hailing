@@ -13,10 +13,10 @@ let getAccount: GetAccount;
 //Integration test with unit test
 beforeEach(() => {
   // Implementation of fake (AccountDAOMemory and MailerGatewayMemory)
-  const accoutDAO = new AcountRepositoryMemory();
+  const accoutRepository = new AcountRepositoryMemory();
   const mailerGateway = new MailerGatewayMemory();
-  signup = new Signup(accoutDAO, mailerGateway);
-  getAccount = new GetAccount(accoutDAO);
+  signup = new Signup(accoutRepository, mailerGateway);
+  getAccount = new GetAccount(accoutRepository);
 });
 
 test('Deve criar a conta de um passageiro', async function () {
@@ -65,13 +65,13 @@ test('Nao deve criar a conta de um passageiro com o cpf inválido', async functi
 });
 
 test("Não deve criar uma conta para o passageiro se a conta já existe", async function () {
-  const input = {
-    name: 'John Doe',
-    email: `john.doe${Math.random()}@gmail.com`,
-    cpf: '87748248800',
-    isPassenger: true,
-  };
-  await signup.execute(input);
+	const input = {
+		name: "John Doe",
+		email: `john.doe${Math.random()}@gmail.com`,
+		cpf: "87748248800",
+		isPassenger: true,
+	};
+	await signup.execute(input);
 	await expect(() => signup.execute(input)).rejects.toThrow(new Error("Account already exists"));
 });
 
