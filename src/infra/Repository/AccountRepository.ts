@@ -31,20 +31,20 @@ export class AccountRepositoryDatabase implements AccountRepository {
 
 // Driven/Adapter
 export class AcountRepositoryMemory implements AccountRepository {
-  accounts: any[];
+  accounts: Account[];
 
   constructor() {
     this.accounts = [];
   }
   async getByEmail(email: string): Promise<any> {
-    const account = this.accounts.find((account: any) => account.email === email);
+    const account = this.accounts.find((account: Account) => account.getEmail() === email);
     return account;
   }
   async getById(accountId: string): Promise<any> {
-    const account = this.accounts.find((account: any) => account.accountId === accountId);
+    const account = this.accounts.find((account: Account) => account.accountId === accountId);
     return account;
   }
-  async saveAccount(account: any): Promise<void> {
+  async saveAccount(account: Account): Promise<void> {
     this.accounts.push(account);
   }
 }
