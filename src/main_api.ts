@@ -12,10 +12,10 @@ import GetAccount from './application/usecase/GetAccount';
 const httpServer = new ExpressAdapter();
 // const httpServer = new HapiAdapter();
 const connection = new PgPromiseAdapter();
-const accountDAO = new AccountRepositoryDatabase(connection);
+const accountRepository = new AccountRepositoryDatabase(connection);
 const mailerGateway = new MailerGatewayMemory();
-const signup = new Signup(accountDAO, mailerGateway);
-const getAccount = new GetAccount(accountDAO);
+const signup = new Signup(accountRepository, mailerGateway);
+const getAccount = new GetAccount(accountRepository);
 new AccountController(httpServer, signup, getAccount);
 httpServer.listen(3000);
 

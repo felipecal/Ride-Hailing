@@ -122,10 +122,10 @@ test('Deve criar a conta para um passageiro com stub', async function () {
     .stub(AccountRepositoryDatabase.prototype, 'getById')
     .resolves(Account.restore('', input.name, input.email, input.cpf, '', true, false));
   const connection = new PgPromiseAdapter();
-  const accountDAO = new AccountRepositoryDatabase(connection);
+  const accountRepository = new AccountRepositoryDatabase(connection);
   const mailerGateway = new MailerGatewayMemory();
-  const signup = new Signup(accountDAO, mailerGateway);
-  const getAccount = new GetAccount(accountDAO);
+  const signup = new Signup(accountRepository, mailerGateway);
+  const getAccount = new GetAccount(accountRepository);
   const resultOfSignup = await signup.execute(input);
   expect(resultOfSignup.accountId).toBeDefined();
   const resultGetAccount = await getAccount.execute(resultOfSignup.accountId);
@@ -181,10 +181,10 @@ test('Deve criar uma conta para o passageiro com mock', async function () {
     })
     .resolves();
   const connection = new PgPromiseAdapter();
-  const accountDAO = new AccountRepositoryDatabase(connection);
+  const accountRepository = new AccountRepositoryDatabase(connection);
   const mailerGateway = new MailerGatewayMemory();
-  const signup = new Signup(accountDAO, mailerGateway);
-  const getAccount = new GetAccount(accountDAO);
+  const signup = new Signup(accountRepository, mailerGateway);
+  const getAccount = new GetAccount(accountRepository);
   const resultOfSignup = await signup.execute(input);
   expect(resultOfSignup.accountId).toBeDefined();
   const resultOfGetAccount = await getAccount.execute(resultOfSignup.accountId);
