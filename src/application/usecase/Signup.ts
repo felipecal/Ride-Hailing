@@ -20,6 +20,7 @@ export default class Signup {
 	}
 }
 
+//DTO - Data Transfer Object
 type Input = {
   accountId?: string;
   name: string;

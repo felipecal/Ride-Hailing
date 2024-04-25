@@ -1,10 +1,11 @@
+
 import { AccountRepository } from '../../infra/repository/AccountRepository';
 
 export default class GetAccount {
-  constructor(readonly accountDAO: AccountRepository) {}
+  constructor(readonly accountRepository: AccountRepository) {}
 
   async execute(accountId: string): Promise<Output> {
-    const account = await this.accountDAO.getById(accountId);
+    const account = await this.accountRepository.getById(accountId);
     if (!account) throw new Error(`Account not found`);
     return {
       accountId: account.accountId,
@@ -18,6 +19,7 @@ export default class GetAccount {
   }
 }
 
+//DTO - Data Transfer Object
 type Output = {
   accountId: string;
   name: string;
