@@ -1,16 +1,17 @@
 import Ride from '../../domain/entity/Ride';
 import DatabaseConnection from '../database/DatabaseConnection';
 
+// Driven/Resource Port
 export interface RideRepository {
   getRideById(rideId: string): Promise<Ride>;
   getActivesRidesByPassengerID(passengerId: string): Promise<Ride | undefined>;
   saveRide(ride: Ride): Promise<void>;
   updateRide (ride: Ride): Promise<void>;}
 
-// Driven/Port
+// Driven/Resource Adapter
 export class RideRepositoryDatabase implements RideRepository {
   constructor(readonly connection: DatabaseConnection) {}
-  // Driven/Adapter
+
   async getRideById(rideId: string) {
     const [ride] = await this.connection.query('select * from cccat16.ride where ride_id = $1', [rideId]);
     return Ride.restore(ride.ride_id, ride.passenger_id, ride.driver_id, parseFloat(ride.from_lat), parseFloat(ride.from_long), parseFloat(ride.to_lat), parseFloat(ride.to_long), ride.status, ride.date);
@@ -38,7 +39,7 @@ export class RideRepositoryDatabase implements RideRepository {
   
 }
 
-// Driven/Adapter
+// Driven/Resource Adapter
 export class RideRepositoryMemory implements RideRepository {
   rides: Ride[];
 

@@ -1,12 +1,14 @@
 import Account from '../../domain/entity/Account';
 import DatabaseConnection from '../database/DatabaseConnection';
+
+// Driven/Resource Port
 export interface AccountRepository {
   getByEmail(email: string): Promise<Account | undefined>;
   getById(accountId: string): Promise<Account>;
   saveAccount(account: Account): Promise<void>;
 }
 
-// Driven/Port
+// Driven/Resource Adapter
 export class AccountRepositoryDatabase implements AccountRepository {
   constructor(readonly connection: DatabaseConnection) {}
   async getByEmail(email: string) {
@@ -29,7 +31,7 @@ export class AccountRepositoryDatabase implements AccountRepository {
   }
 }
 
-// Driven/Adapter
+// Driven/Resource Adapter
 export class AcountRepositoryMemory implements AccountRepository {
   accounts: Account[];
 
