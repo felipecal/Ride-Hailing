@@ -1,4 +1,3 @@
-import { AccountRepository } from './../src/infra/repository/AccountRepository';
 import GetRide from '../src/application/usecase/GetRide';
 import RequestRide from '../src/application/usecase/RequestRide';
 import Signup from '../src/application/usecase/Signup';
@@ -6,8 +5,6 @@ import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
 import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
 import { AccountRepositoryDatabase } from '../src/infra/repository/AccountRepository';
 import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
-import Account from '../src/domain/entity/Account';
-import Ride from '../src/domain/entity/Ride';
 
 test('Deve solicitar uma nova corrida', async function () {
   const connection = new PgPromiseAdapter();
@@ -33,7 +30,10 @@ test('Deve solicitar uma nova corrida', async function () {
   const requestRide = new RequestRide(accountRepository, rideRepository);
   const resultOfRequestRide = await requestRide.execute(inputRequestRide);
   expect(resultOfRequestRide).toBeDefined();
-  const resultOfGetRide = await getRide.execute(resultOfRequestRide.rideId);
+  const inputGetRide = {
+    rideId: resultOfRequestRide.rideId
+  }
+  const resultOfGetRide = await getRide.execute(inputGetRide);
   expect(resultOfGetRide.status).toBe('requested');
   expect(resultOfGetRide.passengerName).toBe(inputSignup.name);
   expect(resultOfGetRide.passengerEmail).toBe(inputSignup.email);
