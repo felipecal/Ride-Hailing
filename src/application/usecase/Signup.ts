@@ -8,7 +8,7 @@ export default class Signup {
     readonly mailerGateway: MailerGateway,
   ) {}
 
-	async execute (input: any): Promise<any> {
+	async execute (input: Input): Promise<any> {
 		const existingAccount = await this.accountRepository.getByEmail(input.email);
 		if (existingAccount) throw new Error("Account already exists");
 		const account = Account.create(input.name, input.email, input.cpf, input.carPlate, input.isPassenger, input.isDriver);
@@ -22,7 +22,6 @@ export default class Signup {
 
 //DTO - Data Transfer Object
 type Input = {
-  accountId?: string;
   name: string;
   email: string;
   cpf: string;
