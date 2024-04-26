@@ -26,3 +26,11 @@ to_lat numeric,
 to_long numeric,
 date timestamp
 );
+
+create table cccat16.position (
+	position_id uuid,
+	ride_id uuid,
+	lat numeric,
+	long numeric,
+	date timestamp
+);
