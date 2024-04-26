@@ -18,7 +18,9 @@ test("Deve iniciar uma corrida", async function () {
 		name: "John Doe",
 		email: `john.doe${Math.random()}@gmail.com`,
 		cpf: "87748248800",
-		isPassenger: true
+		carPlate: '',
+		isPassenger: true,
+		isDriver: false
 	};
 	const outputSignup = await signup.execute(inputSignup);
 	const inputSignupDriver = {
@@ -26,6 +28,7 @@ test("Deve iniciar uma corrida", async function () {
 		email: `john.doe${Math.random()}@gmail.com`,
 		cpf: "87748248800",
 		carPlate: "AAA9999",
+		isPassenger: false,
 		isDriver: true
 	};
 	const outputSignupDriver = await signup.execute(inputSignupDriver);

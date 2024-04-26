@@ -17,7 +17,9 @@ test('Deve solicitar uma nova corrida', async function () {
 		name: "John Doe",
 		email: `john.doe${Math.random()}@gmail.com`,
 		cpf: "87748248800",
-		isPassenger: true
+    carPlate: '',
+		isPassenger: true,
+    isDriver: false
 	};
   const resultSignup = await signup.execute(inputSignup);
 	const inputRequestRide = {
@@ -50,7 +52,9 @@ test('Não deve poder solicitar uma nova corrida se não for um passageiro', asy
 		name: "John Doe",
 		email: `john.doe${Math.random()}@gmail.com`,
 		cpf: "87748248800",
-		isPassenger: false
+    carPlate: '',
+		isPassenger: false,
+    isDriver: true
 	};
   const resultSignup = await signup.execute(inputSignup);
   const inputRequestRide = {
@@ -75,7 +79,9 @@ test('Não deve poder solicitar uma nova corrida se o passageiro tiver outra cor
 		name: "John Doe",
 		email: `john.doe${Math.random()}@gmail.com`,
 		cpf: "87748248800",
-		isPassenger: true
+    carPlate: '',
+		isPassenger: true,
+    isDriver: false
 	};  
   const resultSignup = await signup.execute(inputSignup);
   const requestRide = new RequestRide(accountRepository, rideRepository);

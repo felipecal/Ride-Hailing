@@ -24,7 +24,9 @@ test('Deve criar a conta de um passageiro', async function () {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
     cpf: '87748248800',
-    isPassenger: true,
+    carPlate: '',
+		isPassenger: true,
+    isDriver: false
   };
   const resultOfSignup = await signup.execute(input);
   const resultOfGetAccount = await getAccount.execute(resultOfSignup.accountId);
@@ -39,7 +41,9 @@ test('Nao deve criar a conta de um passageiro com o nome inválido', async funct
     name: 'John',
     email: `john.doe${Math.random()}@gmail.com`,
     cpf: '87748248800',
-    isPassenger: true,
+    carPlate: '',
+		isPassenger: true,
+    isDriver: false
   };
   await expect(() => signup.execute(input)).rejects.toThrow(new Error('Invalid name'));
 });
@@ -49,7 +53,9 @@ test('Nao deve criar a conta de um passageiro com o email inválido', async func
     name: 'John Doe',
     email: `john.doe${Math.random()}`,
     cpf: '87748248800',
-    isPassenger: true,
+    carPlate: '',
+		isPassenger: true,
+    isDriver: false
   };
   await expect(signup.execute(input)).rejects.toThrow(new Error('Invalid email'));
 });
@@ -59,7 +65,9 @@ test('Nao deve criar a conta de um passageiro com o cpf inválido', async functi
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
     cpf: '8774824',
-    isPassenger: true,
+    carPlate: '',
+		isPassenger: true,
+    isDriver: false
   };
   await expect(signup.execute(input)).rejects.toThrow(new Error('Invalid cpf'));
 });
@@ -69,7 +77,9 @@ test("Não deve criar uma conta para o passageiro se a conta já existe", async 
 		name: "John Doe",
 		email: `john.doe${Math.random()}@gmail.com`,
 		cpf: "87748248800",
+    carPlate: '',
 		isPassenger: true,
+    isDriver: false
 	};
 	await signup.execute(input);
 	await expect(() => signup.execute(input)).rejects.toThrow(new Error("Account already exists"));
@@ -114,7 +124,9 @@ test('Deve criar a conta para um passageiro com stub', async function () {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
     cpf: '87748248800',
+    carPlate: '',
     isPassenger: true,
+    isDriver: false
   };
   const saveAccountStub = sinon.stub(AccountRepositoryDatabase.prototype, 'saveAccount').resolves();
   const getAccountByEmailStub = sinon.stub(AccountRepositoryDatabase.prototype, 'getByEmail').resolves(undefined);
@@ -143,7 +155,9 @@ test('Deve criar a conta de um passageiro com spy', async function () {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
     cpf: '87748248800',
+    carPlate: '',
     isPassenger: true,
+    isDriver: false
   };
   const sendSpy = sinon.spy(MailerGatewayMemory.prototype, 'send');
   const connection = new PgPromiseAdapter();
@@ -169,7 +183,9 @@ test('Deve criar uma conta para o passageiro com mock', async function () {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
     cpf: '87748248800',
+    carPlate: '',
     isPassenger: true,
+    isDriver: false
   };
   const sendMock = sinon.mock(MailerGatewayMemory.prototype);
   sendMock
