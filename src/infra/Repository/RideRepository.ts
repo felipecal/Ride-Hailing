@@ -6,7 +6,8 @@ export interface RideRepository {
   getRideById(rideId: string): Promise<Ride>;
   getActivesRidesByPassengerID(passengerId: string): Promise<Ride | undefined>;
   saveRide(ride: Ride): Promise<void>;
-  updateRide (ride: Ride): Promise<void>;}
+  updateRide(ride: Ride): Promise<void>;
+}
 
 // Driven/Resource Adapter
 export class RideRepositoryDatabase implements RideRepository {
@@ -14,7 +15,17 @@ export class RideRepositoryDatabase implements RideRepository {
 
   async getRideById(rideId: string) {
     const [ride] = await this.connection.query('select * from cccat16.ride where ride_id = $1', [rideId]);
-    return Ride.restore(ride.ride_id, ride.passenger_id, ride.driver_id, parseFloat(ride.from_lat), parseFloat(ride.from_long), parseFloat(ride.to_lat), parseFloat(ride.to_long), ride.status, ride.date);
+    return Ride.restore(
+      ride.ride_id,
+      ride.passenger_id,
+      ride.driver_id,
+      parseFloat(ride.from_lat),
+      parseFloat(ride.from_long),
+      parseFloat(ride.to_lat),
+      parseFloat(ride.to_long),
+      ride.status,
+      ride.date,
+    );
   }
 
   async getActivesRidesByPassengerID(passengerId: string) {
@@ -23,7 +34,17 @@ export class RideRepositoryDatabase implements RideRepository {
       [passengerId],
     );
     if (!ride) return;
-    return Ride.restore(ride.ride_id, ride.passenger_id, ride.driver_id, parseFloat(ride.from_lat), parseFloat(ride.from_long), parseFloat(ride.to_lat), parseFloat(ride.to_long), ride.status, ride.date);
+    return Ride.restore(
+      ride.ride_id,
+      ride.passenger_id,
+      ride.driver_id,
+      parseFloat(ride.from_lat),
+      parseFloat(ride.from_long),
+      parseFloat(ride.to_lat),
+      parseFloat(ride.to_long),
+      ride.status,
+      ride.date,
+    );
   }
 
   async saveRide(ride: Ride) {
@@ -33,10 +54,13 @@ export class RideRepositoryDatabase implements RideRepository {
     );
   }
 
-	async updateRide(ride: Ride): Promise<void> {
-		await this.connection.query("update cccat16.ride set status = $1, driver_id = $2 where ride_id = $3", [ride.getStatus(), ride.driverId, ride.rideId]);
-	}
-  
+  async updateRide(ride: Ride): Promise<void> {
+    await this.connection.query('update cccat16.ride set status = $1, driver_id = $2 where ride_id = $3', [
+      ride.getStatus(),
+      ride.driverId,
+      ride.rideId,
+    ]);
+  }
 }
 
 // Driven/Resource Adapter
@@ -60,10 +84,8 @@ export class RideRepositoryMemory implements RideRepository {
   }
 
   async updateRide(ride: Ride): Promise<void> {
-    this.rides.forEach((element: any, index: any) => { 
-      if(element.driverId === ride.driverId) [
-        element[index] = ride
-      ]
-    })
+    this.rides.forEach((element: any, index: any) => {
+      if (element.driverId === ride.driverId) [(element[index] = ride)];
+    });
   }
 }

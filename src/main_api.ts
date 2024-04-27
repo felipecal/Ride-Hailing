@@ -1,6 +1,5 @@
 //main
 
-
 import { MailerGatewayMemory } from './infra/gateway/MailerGateway';
 import { AccountRepositoryDatabase } from './infra/repository/AccountRepository';
 import { PgPromiseAdapter } from './infra/database/DatabaseConnection';
@@ -18,5 +17,3 @@ const signup = new Signup(accountRepository, mailerGateway);
 const getAccount = new GetAccount(accountRepository);
 new AccountController(httpServer, signup, getAccount);
 httpServer.listen(3000);
-
-

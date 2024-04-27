@@ -5,7 +5,7 @@ import Account from '../src/domain/entity/Account';
 //Integration test
 
 test('Deve salvar um registro de passageiro na tabela account e consultar um registro por id', async function () {
-  const account = Account.create('John Doe', `john.doe${Math.random()}@gmail.com`, "87748248800", '', true, false);
+  const account = Account.create('John Doe', `john.doe${Math.random()}@gmail.com`, '87748248800', '', true, false);
   let connection = new PgPromiseAdapter();
   const accountRepository = new AccountRepositoryDatabase(connection);
   await accountRepository.saveAccount(account);
@@ -17,7 +17,7 @@ test('Deve salvar um registro de passageiro na tabela account e consultar um reg
 });
 
 test('Deve salvar um registro de motorista na tabela account e consultar um registro por email', async function () {
-  const account = Account.create('John Doe', `john.doe${Math.random()}@gmail.com`, "87748248800", 'JKJ3781', false, true);
+  const account = Account.create('John Doe', `john.doe${Math.random()}@gmail.com`, '87748248800', 'JKJ3781', false, true);
   const connection = new PgPromiseAdapter();
   const accountRepository = new AccountRepositoryDatabase(connection);
   await accountRepository.saveAccount(account);

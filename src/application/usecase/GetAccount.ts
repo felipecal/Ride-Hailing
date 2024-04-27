@@ -1,4 +1,3 @@
-
 import { AccountRepository } from '../../infra/repository/AccountRepository';
 
 export default class GetAccount {
@@ -14,7 +13,7 @@ export default class GetAccount {
       cpf: account.getCpf(),
       carPlate: account.getCarPlate(),
       isPassenger: account.isPassenger,
-      isDriver: account.isDriver
+      isDriver: account.isDriver,
     };
   }
 }
@@ -23,9 +22,9 @@ export default class GetAccount {
 type Output = {
   accountId: string;
   name: string;
-  email:string;
+  email: string;
   cpf: string;
   carPlate: string;
   isPassenger: boolean;
   isDriver: boolean;
-}
+};
