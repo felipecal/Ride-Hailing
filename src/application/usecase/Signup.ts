@@ -8,7 +8,7 @@ export default class Signup {
     readonly mailerGateway: MailerGateway,
   ) {}
 
-	async execute (input: Input): Promise<any> {
+	async execute (input: Input): Promise<Output> {
 		const existingAccount = await this.accountRepository.getByEmail(input.email);
 		if (existingAccount) throw new Error("Account already exists");
 		const account = Account.create(input.name, input.email, input.cpf, input.carPlate, input.isPassenger, input.isDriver);
@@ -29,3 +29,7 @@ type Input = {
   isPassenger: boolean;
   isDriver: boolean;
 };
+
+type Output = {
+  accountId: string;
+}
