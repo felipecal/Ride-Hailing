@@ -47,6 +47,10 @@ export default class Ride {
     this.status.start();
   }
 
+  finish(){
+    this.status.finish()
+  }
+
   getFromLat() {
     return this.segment.from.getLat();
   }
