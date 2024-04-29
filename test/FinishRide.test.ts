@@ -8,6 +8,7 @@ import AcceptRide from '../src/application/usecase/AcceptRide';
 import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
 import FinishRide from '../src/application/usecase/FinishRide';
 import StartRide from '../src/application/usecase/StartRide';
+import ProcessPayment from '../src/application/usecase/ProcessPayment';
 
 test('Deve finalizar uma corrida', async function () {
   const connection = new PgPromiseAdapter();
@@ -53,7 +54,8 @@ test('Deve finalizar uma corrida', async function () {
     rideId: outputRequestRide.rideId,
   };
   await startRide.execute(inputStartRide);
-  const finishRide = new FinishRide(rideRepository);
+  const processPayment = new ProcessPayment();
+  const finishRide = new FinishRide(rideRepository, processPayment);
   const inputFinishRide = {
     rideId: outputRequestRide.rideId,
     driverId: outputSignupDriver.accountId,
