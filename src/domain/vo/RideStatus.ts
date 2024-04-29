@@ -72,11 +72,11 @@ export class InProgressStatus extends RideStatus {
   }
 
   finish(): void {
-    this.ride.status = new FinishedStatus(this.ride);
+    this.ride.status = new CompletedStatus(this.ride);
   }
 }
 
-export class FinishedStatus extends RideStatus {
+export class CompletedStatus extends RideStatus {
   value: string;
   constructor(ride: Ride) {
     super(ride);
@@ -103,7 +103,7 @@ export class RideStatusFactory {
     if (status === 'requested') return new RequestedStatus(ride);
     if (status === 'accepted') return new AcceptedStatus(ride);
     if (status === 'in_progress') return new InProgressStatus(ride);
-    if (status === 'completed') return new FinishedStatus(ride);
+    if (status === 'completed') return new CompletedStatus(ride);
     throw new Error('Invalid status');
   }
 }

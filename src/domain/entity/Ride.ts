@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import Segment from '../vo/Segment';
 import Coord from '../vo/Coord';
 import RideStatus, { RideStatusFactory } from '../vo/RideStatus';
+import CalculateFare from '../ds/CalculateFare';
 
 export default class Ride {
   status: RideStatus;
@@ -49,6 +50,7 @@ export default class Ride {
 
   finish(){
     this.status.finish()
+    CalculateFare.calculate(this.getDistance())
   }
 
   getFromLat() {
