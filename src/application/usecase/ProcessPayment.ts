@@ -1,9 +1,7 @@
-
 export default class ProcessPayment {
-  constructor(){}
+  constructor() {}
 
-  async execute(rideId: string, creditCardToken: any, amount: number): Promise<void>{
+  async execute(rideId: string, creditCardToken: any, amount: number): Promise<void> {
     console.log('Ride id', rideId, 'creditCardToken', creditCardToken, 'amount', amount);
-
   }
 }

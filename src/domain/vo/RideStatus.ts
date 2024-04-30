@@ -28,7 +28,7 @@ export class RequestedStatus extends RideStatus {
   }
 
   finish(): void {
-    throw new Error('Invalid Status')
+    throw new Error('Invalid Status');
   }
 }
 
@@ -50,7 +50,7 @@ export class AcceptedStatus extends RideStatus {
   }
 
   finish(): void {
-    throw new Error('Invalid Status.')
+    throw new Error('Invalid Status.');
   }
 }
 

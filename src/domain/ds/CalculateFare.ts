@@ -3,4 +3,4 @@ export default class CalculateFare {
     const distanceMultiplier = 2.1;
     return distance * distanceMultiplier;
   }
-} 
+}

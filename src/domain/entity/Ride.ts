@@ -48,9 +48,9 @@ export default class Ride {
     this.status.start();
   }
 
-  finish(){
-    this.status.finish()
-    CalculateFare.calculate(this.getDistance())
+  finish() {
+    this.status.finish();
+    CalculateFare.calculate(this.getDistance());
   }
 
   getFromLat() {
