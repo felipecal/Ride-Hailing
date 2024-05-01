@@ -3,6 +3,7 @@ import DatabaseConnection from '../database/DatabaseConnection';
 
 // Driven/Resource Port
 export interface RideRepository {
+  connection: DatabaseConnection;
   getRideById(rideId: string): Promise<Ride>;
   getActivesRidesByPassengerID(passengerId: string): Promise<Ride | undefined>;
   saveRide(ride: Ride): Promise<void>;
@@ -25,6 +26,10 @@ export class RideRepositoryDatabase implements RideRepository {
       parseFloat(ride.to_long),
       ride.status,
       ride.date,
+      ride.last_lat,
+      ride.last_long,
+      ride.distance,
+      ride.fare
     );
   }
 
@@ -44,6 +49,10 @@ export class RideRepositoryDatabase implements RideRepository {
       parseFloat(ride.to_long),
       ride.status,
       ride.date,
+      ride.last_lat,
+      ride.last_long,
+      ride.distance,
+      ride.fare
     );
   }
 
@@ -64,28 +73,29 @@ export class RideRepositoryDatabase implements RideRepository {
 }
 
 // Driven/Resource Adapter
-export class RideRepositoryMemory implements RideRepository {
-  rides: Ride[];
+// export class RideRepositoryMemory implements RideRepository {
+//   rides: Ride[];
 
-  constructor() {
-    this.rides = [];
-  }
+//   constructor() {
+//     this.rides = [];
+//   }
+//   connection: DatabaseConnection;
 
-  async getRideById(rideId: string): Promise<any> {
-    const ride = this.rides.find((ride: Ride) => ride.rideId === rideId);
-    return ride;
-  }
-  async getActivesRidesByPassengerID(passengerId: string): Promise<any> {
-    const ride = this.rides.find((ride: Ride) => ride.passengerId === passengerId);
-    return ride;
-  }
-  async saveRide(ride: Ride): Promise<void> {
-    this.rides.push(ride);
-  }
+//   async getRideById(rideId: string): Promise<any> {
+//     const ride = this.rides.find((ride: Ride) => ride.rideId === rideId);
+//     return ride;
+//   }
+//   async getActivesRidesByPassengerID(passengerId: string): Promise<any> {
+//     const ride = this.rides.find((ride: Ride) => ride.passengerId === passengerId);
+//     return ride;
+//   }
+//   async saveRide(ride: Ride): Promise<void> {
+//     this.rides.push(ride);
+//   }
 
-  async updateRide(ride: Ride): Promise<void> {
-    this.rides.forEach((element: any, index: any) => {
-      if (element.driverId === ride.driverId) [(element[index] = ride)];
-    });
-  }
-}
+//   async updateRide(ride: Ride): Promise<void> {
+//     this.rides.forEach((element: any, index: any) => {
+//       if (element.driverId === ride.driverId) [(element[index] = ride)];
+//     });
+//   }
+// }

@@ -4,6 +4,7 @@ import DatabaseConnection from '../database/DatabaseConnection';
 // Driven/Resource Port
 export interface PositionRepository {
   savePosition(position: Position): Promise<void>;
+  listPositionByRideId(rideId: string): Promise<Position[]>;
 }
 // Driven/Resource Adapter
 export class PositionRepositoryDatabase implements PositionRepository {
@@ -18,6 +19,15 @@ export class PositionRepositoryDatabase implements PositionRepository {
       position.date,
     ]);
   }
+
+  async listPositionByRideId(rideId: string): Promise<Position[]> {
+		const positionsData = await this.connection.query("select * from cccat16.position where ride_id = $1", [rideId]);
+		const positions = [];
+		for (const positionData of positionsData) {
+			positions.push(Position.restore(positionData.position_id, positionData.ride_id, parseFloat(positionData.lat), parseFloat(positionData.long), positionData.date));
+		}
+		return positions;
+	}
 }
 
 // Driven/Resource Adapter
@@ -27,8 +37,13 @@ export class PositionRepositoryMemory implements PositionRepository {
   constructor() {
     this.positions = [];
   }
-
+  
   async savePosition(position: Position): Promise<void> {
     this.positions.push(position);
+  }
+
+  
+  listPositionByRideId(rideId: string): Promise<Position[]> {
+    throw new Error('Method not implemented.');
   }
 }
