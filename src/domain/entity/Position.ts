@@ -9,9 +9,8 @@ export default class Position {
     readonly date: Date,
   ) {}
 
-  static create(rideId: string, lat: number, long: number) {
+  static create(rideId: string, lat: number, long: number, date: Date) {
     const positionId = crypto.randomUUID();
-    const date = new Date();
     return new Position(positionId, rideId, new Coord(lat, long), date);
   }
 

@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import Segment from '../vo/Segment';
 import Coord from '../vo/Coord';
 import RideStatus, { RideStatusFactory } from '../vo/RideStatus';
-import CalculateFare from '../ds/CalculateFare';
+import { FareCalculatorFactory } from '../ds/CalculateFare';
 
 export default class Ride {
   status: RideStatus;
@@ -14,6 +14,9 @@ export default class Ride {
     private segment: Segment,
     status: string,
     readonly date: Date,
+    private lastPosition: Coord,
+    public distance: number,
+    public fare: number
   ) {
     this.status = RideStatusFactory.create(this, status);
   }
@@ -22,7 +25,10 @@ export default class Ride {
     const rideId = crypto.randomUUID();
     const status = 'requested';
     const date = new Date();
-    return new Ride(rideId, passengerId, '', new Segment(new Coord(fromLat, fromLong), new Coord(toLat, toLong)), status, date);
+    const lastPosition = new Coord(fromLat, fromLong);
+    const distance = 0;
+    const fare = 0;
+    return new Ride(rideId, passengerId, '', new Segment(new Coord(fromLat, fromLong), new Coord(toLat, toLong)), status, date, lastPosition, distance, fare);
   }
 
   static restore(
@@ -35,8 +41,12 @@ export default class Ride {
     toLong: number,
     status: string,
     date: Date,
+    lastLat: number,
+    lastLong: number,
+    distance: number,
+    fare: number
   ) {
-    return new Ride(rideId, passengerId, driverId, new Segment(new Coord(fromLat, fromLong), new Coord(toLat, toLong)), status, date);
+    return new Ride(rideId, passengerId, '', new Segment(new Coord(fromLat, fromLong), new Coord(toLat, toLong)), status, date, new Coord(lastLat, lastLong), distance, fare);
   }
 
   accept(driverId: string) {
@@ -48,9 +58,16 @@ export default class Ride {
     this.status.start();
   }
 
+  updatePosition(lat: number, long: number, date: Date){
+    const newPosition = new Coord(lat, long);
+    const distance = new Segment(this.lastPosition, newPosition).getDistance();
+    this.distance !- distance;
+    this.fare = FareCalculatorFactory.create(date).calculate(distance);
+    this.lastPosition = newPosition;
+  }
+
   finish() {
     this.status.finish();
-    CalculateFare.calculate(this.getDistance());
   }
 
   getFromLat() {
