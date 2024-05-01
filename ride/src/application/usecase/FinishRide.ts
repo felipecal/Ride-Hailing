@@ -1,10 +1,14 @@
+import { inject } from '../../infra/di/Registry';
 import { RideRepository } from '../../infra/repository/RideRepository';
-import ProcessPayment from './ProcessPayment';
+import PaymentGateway from '../gateway/PaymentGateway';
 
 export default class FinishRide {
+	@inject("rideRepository")
+	readonly rideRepository!: RideRepository;
+	@inject("paymentGateway")
+	readonly paymentGateway!: PaymentGateway;
+
   constructor(
-    readonly rideRepository: RideRepository,
-    private processPayment: ProcessPayment,
   ) {}
 
   async execute(input: Input): Promise<void> {
@@ -12,6 +16,7 @@ export default class FinishRide {
     if (!ride) throw new Error('Ride not found ');
     ride.finish();
     await this.rideRepository.updateRide(ride);
+    await this.paymentGateway.processPayment({rideId: ride.rideId, amount: ride.fare})
   }
 }
 

@@ -1,11 +1,11 @@
 export default class ProcessPayment {
-  constructor() {}
 
-  async execute(input: Input): Promise<void> {
-    console.log('Ride id', input.rideId, 'amount', input.amount);
-  }
+	constructor () {}
+	
+	async execute (input: Input): Promise<void> {
+		console.log(input.rideId, input.amount);
+	}
 }
-
 
 type Input = {
 	rideId: string,
