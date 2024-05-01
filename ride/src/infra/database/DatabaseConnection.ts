@@ -31,7 +31,7 @@ export class UnitOfWork implements DatabaseConnection {
 	statements: { statement: string, params: any }[];
 
 	constructor () {
-		this.connection = pgp()("postgres://postgres:123456@localhost:5432/app");
+		this.connection = pgp()("cccat16-postgres://postgres:123456@localhost:5432");
 		this.statements = [];
 	}
 
