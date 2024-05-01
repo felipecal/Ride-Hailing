@@ -14,17 +14,19 @@ create table cccat16.account (
 
 
 create table cccat16.ride (
-ride_id uuid,
-passenger_id uuid,
-driver_id uuid,
-status text,
-fare numeric,
-distance numeric,
-from_lat numeric,
-from_long numeric,
-to_lat numeric,
-to_long numeric,
-date timestamp
+	ride_id uuid,
+	passenger_id uuid,
+	driver_id uuid,
+	status text,
+	fare numeric,
+	distance numeric,
+	from_lat numeric,
+	from_long numeric,
+	to_lat numeric,
+	to_long numeric,
+	date timestamp,
+	last_lat numeric,
+	last_long numeric
 );
 
 create table cccat16.position (
