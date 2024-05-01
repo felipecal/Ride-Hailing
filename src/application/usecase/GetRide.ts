@@ -1,10 +1,12 @@
 import { AccountRepository } from '../../infra/repository/AccountRepository';
+import { PositionRepository } from '../../infra/repository/PositionRepository';
 import { RideRepository } from '../../infra/repository/RideRepository';
 
 export default class GetRide {
   constructor(
     readonly accountRepository: AccountRepository,
     readonly rideRepository: RideRepository,
+    readonly positionRepository: PositionRepository
   ) {}
   async execute(input: Input): Promise<Output> {
     const ride = await this.rideRepository.getRideById(input.rideId);
@@ -13,6 +15,7 @@ export default class GetRide {
     if (ride.driverId) {
       driver = await this.accountRepository.getById(ride.driverId);
     }
+    const positions = await this.positionRepository.listPositionByRideId(input.rideId)
     return {
       rideId: ride.rideId,
       passengerId: ride.passengerId,
@@ -25,6 +28,8 @@ export default class GetRide {
       passengerEmail: passenger.getEmail(),
       driverName: driver?.getName(),
       driverEmail: driver?.getEmail(),
+      distance: ride.distance,
+      fare: ride.fare
     };
   }
 }
@@ -48,4 +53,6 @@ type Output = {
   passengerEmail: string;
   driverName?: string;
   driverEmail?: string;
+  distance: number;
+  fare: number;
 };
