@@ -17,7 +17,7 @@ export default class Ride {
     private lastPosition: Coord,
     public distance: number,
     public fare: number
-  ) {
+  ) { 
     this.status = RideStatusFactory.create(this, status);
   }
 
@@ -46,7 +46,7 @@ export default class Ride {
     distance: number,
     fare: number
   ) {
-    return new Ride(rideId, passengerId, '', new Segment(new Coord(fromLat, fromLong), new Coord(toLat, toLong)), status, date, new Coord(lastLat, lastLong), distance, fare);
+		return new Ride(rideId, passengerId, driverId, new Segment(new Coord(fromLat, fromLong), new Coord(toLat, toLong)), status, date, new Coord(lastLat, lastLong), distance, fare);
   }
 
   accept(driverId: string) {
@@ -62,7 +62,7 @@ export default class Ride {
     const newPosition = new Coord(lat, long);
     const distance = new Segment(this.lastPosition, newPosition).getDistance();
     this.distance !- distance;
-    this.fare = FareCalculatorFactory.create(date).calculate(distance);
+    this.fare += FareCalculatorFactory.create(date).calculate(distance);
     this.lastPosition = newPosition;
   }
 
@@ -86,9 +86,9 @@ export default class Ride {
     return this.segment.to.getLong();
   }
 
-  getDistance() {
-    return this.segment.getDistance();
-  }
+  // getDistance() {
+  //   return this.segment.getDistance();
+  // }
 
   getStatus() {
     return this.status.value;
