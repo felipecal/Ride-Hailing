@@ -14,7 +14,7 @@ export default class Ride {
     private segment: Segment,
     status: string,
     readonly date: Date,
-    private lastPosition: Coord,
+    public lastPosition: Coord,
     public distance: number,
     public fare: number
   ) { 
@@ -59,11 +59,11 @@ export default class Ride {
   }
 
   updatePosition(lat: number, long: number, date: Date){
-    const newPosition = new Coord(lat, long);
-    const distance = new Segment(this.lastPosition, newPosition).getDistance();
-    this.distance !- distance;
-    this.fare += FareCalculatorFactory.create(date).calculate(distance);
-    this.lastPosition = newPosition;
+		const newPosition = new Coord(lat, long);
+		const distance = new Segment(this.lastPosition, newPosition).getDistance();
+		this.distance += distance;
+		this.fare += FareCalculatorFactory.create(date).calculate(distance);
+		this.lastPosition = newPosition;
   }
 
   finish() {
