@@ -3,7 +3,7 @@
 import pgp from 'pg-promise';
 
 export default interface DatabaseConnection {
-  query(statement: string, params: any): Promise<any>;
+  query(statement: string, params: any, transactional?: boolean): Promise<any>;
   close(): Promise<void>;
   commit(): Promise<void>
 }
