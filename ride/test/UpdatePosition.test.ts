@@ -21,9 +21,9 @@ test("Deve atualizar a posição da corrida", async function () {
 		name: "John Doe",
 		email: `john.doe${Math.random()}@gmail.com`,
 		cpf: "87748248800",
-    carPlate: '',
+		carPlate: '',
 		isPassenger: true,
-    isDriver: false
+		isDriver: false
 	};
 	const outputSignup = await signup.execute(inputSignup);
 	const inputSignupDriver = {
@@ -31,7 +31,7 @@ test("Deve atualizar a posição da corrida", async function () {
 		email: `john.doe${Math.random()}@gmail.com`,
 		cpf: "87748248800",
 		carPlate: "AAA9999",
-    isPassenger: false,
+		isPassenger: false,
 		isDriver: true
 	};
 	const outputSignupDriver = await signup.execute(inputSignupDriver);
