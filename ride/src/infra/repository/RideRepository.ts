@@ -29,15 +29,12 @@ export class RideRepositoryDatabase implements RideRepository {
       parseFloat(ride.last_lat),
       parseFloat(ride.last_long),
       parseFloat(ride.distance),
-      parseFloat(ride.fare)
+      parseFloat(ride.fare),
     );
   }
 
   async getActivesRidesByPassengerID(passengerId: string) {
-    const [ride] = await this.connection.query(
-      "select * from cccat16.ride where passenger_id = $1 and status = 'requested' and status <> 'completed'",
-      [passengerId],
-    );
+    const [ride] = await this.connection.query("select * from cccat16.ride where passenger_id = $1 and status = 'requested' and status <> 'completed'", [passengerId]);
     if (!ride) return;
     return Ride.restore(
       ride.ride_id,
@@ -52,20 +49,36 @@ export class RideRepositoryDatabase implements RideRepository {
       parseFloat(ride.last_lat),
       parseFloat(ride.last_long),
       parseFloat(ride.distance),
-      parseFloat(ride.fare)
+      parseFloat(ride.fare),
     );
   }
 
   async saveRide(ride: Ride) {
     await this.connection.query(
       'insert into cccat16.ride (ride_id, passenger_id, from_lat, from_long, to_lat, to_long, status, date, last_lat, last_long, distance, fare) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
-      [ride.rideId, ride.passengerId, ride.getFromLat(), ride.getFromLong(), ride.getToLat(), ride.getToLong(), ride.getStatus(), ride.date, ride.lastPosition.getLat(), ride.lastPosition.getLong(), ride.distance, ride.fare],
+      [
+        ride.rideId,
+        ride.passengerId,
+        ride.getFromLat(),
+        ride.getFromLong(),
+        ride.getToLat(),
+        ride.getToLong(),
+        ride.getStatus(),
+        ride.date,
+        ride.lastPosition.getLat(),
+        ride.lastPosition.getLong(),
+        ride.distance,
+        ride.fare,
+      ],
     );
   }
 
   async updateRide(ride: Ride): Promise<void> {
-		await this.connection.query("update cccat16.ride set status = $1, driver_id = $2, last_lat = $3, last_long = $4, distance = $5, fare = $6 where ride_id = $7", [ride.getStatus(), ride.driverId, ride.lastPosition.getLat(), ride.lastPosition.getLong(), ride.distance, ride.fare, ride.rideId], true);
-
+    await this.connection.query(
+      'update cccat16.ride set status = $1, driver_id = $2, last_lat = $3, last_long = $4, distance = $5, fare = $6 where ride_id = $7',
+      [ride.getStatus(), ride.driverId, ride.lastPosition.getLat(), ride.lastPosition.getLong(), ride.distance, ride.fare, ride.rideId],
+      true,
+    );
   }
 }
 

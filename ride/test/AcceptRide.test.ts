@@ -12,7 +12,7 @@ test('Deve aceitar uma corrida', async function () {
   const connection = new PgPromiseAdapter();
   const accountRepository = new AccountRepositoryDatabase(connection);
   const rideRepository = new RideRepositoryDatabase(connection);
-  const positionRepository = new PositionRepositoryDatabase(connection)
+  const positionRepository = new PositionRepositoryDatabase(connection);
   const mailerGateway = new MailerGatewayMemory();
   const signup = new Signup(accountRepository, mailerGateway);
   const inputSignup = {

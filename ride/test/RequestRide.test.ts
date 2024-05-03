@@ -11,7 +11,7 @@ test('Deve solicitar uma nova corrida', async function () {
   const connection = new PgPromiseAdapter();
   const accountRepository = new AccountRepositoryDatabase(connection);
   const rideRepository = new RideRepositoryDatabase(connection);
-  const positionRepository = new PositionRepositoryDatabase(connection)
+  const positionRepository = new PositionRepositoryDatabase(connection);
   const mailerGateway = new MailerGatewayMemory();
   const getRide = new GetRide(accountRepository, rideRepository, positionRepository);
   const signup = new Signup(accountRepository, mailerGateway);

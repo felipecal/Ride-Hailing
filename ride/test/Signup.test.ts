@@ -131,9 +131,7 @@ test('Deve criar a conta para um passageiro com stub', async function () {
   const connection = new PgPromiseAdapter();
   const saveAccountStub = sinon.stub(AccountRepositoryDatabase.prototype, 'saveAccount').resolves();
   const getAccountByEmailStub = sinon.stub(AccountRepositoryDatabase.prototype, 'getByEmail').resolves(undefined);
-  const getAccountByIdStub = sinon
-    .stub(AccountRepositoryDatabase.prototype, 'getById')
-    .resolves(Account.restore('', input.name, input.email, input.cpf, '', true, false));
+  const getAccountByIdStub = sinon.stub(AccountRepositoryDatabase.prototype, 'getById').resolves(Account.restore('', input.name, input.email, input.cpf, '', true, false));
   const accountRepository = new AccountRepositoryDatabase(connection);
   const mailerGateway = new MailerGatewayMemory();
   const signup = new Signup(accountRepository, mailerGateway);

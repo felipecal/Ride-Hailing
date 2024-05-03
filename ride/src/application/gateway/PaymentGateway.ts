@@ -1,8 +1,8 @@
 export default interface PaymentGateway {
-	processPayment (input: InputProcessPayment): Promise<void>;
+  processPayment(input: InputProcessPayment): Promise<void>;
 }
 
 type InputProcessPayment = {
-	rideId: string,
-	amount: number
-}
+  rideId: string;
+  amount: number;
+};

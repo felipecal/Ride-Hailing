@@ -6,7 +6,7 @@ export default class GetRide {
   constructor(
     readonly accountRepository: AccountRepository,
     readonly rideRepository: RideRepository,
-    readonly positionRepository: PositionRepository
+    readonly positionRepository: PositionRepository,
   ) {}
   async execute(input: Input): Promise<Output> {
     const ride = await this.rideRepository.getRideById(input.rideId);
@@ -15,7 +15,7 @@ export default class GetRide {
     if (ride.driverId) {
       driver = await this.accountRepository.getById(ride.driverId);
     }
-    const positions = await this.positionRepository.listPositionByRideId(input.rideId)
+    const positions = await this.positionRepository.listPositionByRideId(input.rideId);
     return {
       rideId: ride.rideId,
       passengerId: ride.passengerId,
@@ -29,7 +29,7 @@ export default class GetRide {
       driverName: driver?.getName(),
       driverEmail: driver?.getEmail(),
       distance: ride.distance,
-      fare: ride.fare
+      fare: ride.fare,
     };
   }
 }
