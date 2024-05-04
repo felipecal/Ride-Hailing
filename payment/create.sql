@@ -36,3 +36,11 @@ create table cccat16.position (
 	long numeric,
 	date timestamp
 );
+
+create table cccat16.transaction (
+transaction_id uuid primary key,
+ride_id uuid,
+amount numeric,
+date timestamp,
+status text
+);
