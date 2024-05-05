@@ -1,5 +1,5 @@
 export default interface AccountGateway {
-  getAccount(input: InputGetAccount): Promise<OutputGetAccount>;
+  getAccount(accountId: string): Promise<OutputGetAccount>;
   signUp(input: InputSignUp): Promise<OutputSignUp>
 }
 
