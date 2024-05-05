@@ -1,7 +1,6 @@
 import GetRide from '../src/application/usecase/GetRide';
 import RequestRide from '../src/application/usecase/RequestRide';
 import { AccountRepositoryDatabase } from '../src/infra/repository/AccountRepository';
-import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
 import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
 import { PgPromiseAdapter, UnitOfWork } from '../src/infra/database/DatabaseConnection';
 import AcceptRide from '../src/application/usecase/AcceptRide';
@@ -10,16 +9,15 @@ import UpdatePosition from '../src/application/usecase/UpdatePosition';
 import { PositionRepositoryDatabase } from '../src/infra/repository/PositionRepository';
 import FinishRide from '../src/application/usecase/FinishRide';
 import Registry from '../src/infra/di/Registry';
-import Signup from '../src/application/usecase/Signup';
 import PaymentGatewayHttp from '../src/infra/gateway/PaymentGateway';
+import AccountGatewayHttp from '../src/infra/gateway/AccountGateway';
 
 test('Deve finalizar uma corrida', async function () {
   const connection = new PgPromiseAdapter();
   const accountRepository = new AccountRepositoryDatabase(connection);
   const rideRepository = new RideRepositoryDatabase(connection);
   const positionRepository = new PositionRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory();
-  const signup = new Signup(accountRepository, mailerGateway);
+  const accountGateway = new AccountGatewayHttp();
   const inputSignup = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -28,7 +26,7 @@ test('Deve finalizar uma corrida', async function () {
     isPassenger: true,
     isDriver: false,
   };
-  const outputSignup = await signup.execute(inputSignup);
+  const outputSignup = await accountGateway.signUp(inputSignup);
   const inputSignupDriver = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -37,7 +35,7 @@ test('Deve finalizar uma corrida', async function () {
     isPassenger: false,
     isDriver: true,
   };
-  const outputSignupDriver = await signup.execute(inputSignupDriver);
+  const outputSignupDriver = await accountGateway.signUp(inputSignupDriver);
   const requestRide = new RequestRide(accountRepository, rideRepository);
   const inputRequestRide = {
     passengerId: outputSignup.accountId,

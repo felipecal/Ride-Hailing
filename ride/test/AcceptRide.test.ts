@@ -1,20 +1,19 @@
 import GetRide from '../src/application/usecase/GetRide';
 import RequestRide from '../src/application/usecase/RequestRide';
-import Signup from '../src/application/usecase/Signup';
 import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
 import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
 import { AccountRepositoryDatabase } from '../src/infra/repository/AccountRepository';
 import AcceptRide from '../src/application/usecase/AcceptRide';
 import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
 import { PositionRepositoryDatabase } from '../src/infra/repository/PositionRepository';
+import AccountGatewayHttp from '../src/infra/gateway/AccountGateway';
 
 test('Deve aceitar uma corrida', async function () {
   const connection = new PgPromiseAdapter();
   const accountRepository = new AccountRepositoryDatabase(connection);
   const rideRepository = new RideRepositoryDatabase(connection);
   const positionRepository = new PositionRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory();
-  const signup = new Signup(accountRepository, mailerGateway);
+  const accountGateway = new AccountGatewayHttp()
   const inputSignup = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -23,7 +22,7 @@ test('Deve aceitar uma corrida', async function () {
     isPassenger: true,
     isDriver: false,
   };
-  const outputSignup = await signup.execute(inputSignup);
+  const outputSignup = await accountGateway.signUp(inputSignup);
   const inputSignupDriver = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -32,7 +31,7 @@ test('Deve aceitar uma corrida', async function () {
     isPassenger: false,
     isDriver: true,
   };
-  const outputSignupDriver = await signup.execute(inputSignupDriver);
+  const outputSignupDriver = await accountGateway.signUp(inputSignupDriver);
   const requestRide = new RequestRide(accountRepository, rideRepository);
   const inputRequestRide = {
     passengerId: outputSignup.accountId,

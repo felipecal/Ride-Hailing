@@ -1,8 +1,7 @@
 import GetRide from '../src/application/usecase/GetRide';
 import RequestRide from '../src/application/usecase/RequestRide';
-import Signup from '../src/application/usecase/Signup';
 import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
-import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
+import AccountGatewayHttp from '../src/infra/gateway/AccountGateway';
 import { AccountRepositoryDatabase } from '../src/infra/repository/AccountRepository';
 import { PositionRepositoryDatabase } from '../src/infra/repository/PositionRepository';
 import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
@@ -12,9 +11,8 @@ test('Deve solicitar uma nova corrida', async function () {
   const accountRepository = new AccountRepositoryDatabase(connection);
   const rideRepository = new RideRepositoryDatabase(connection);
   const positionRepository = new PositionRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory();
   const getRide = new GetRide(accountRepository, rideRepository, positionRepository);
-  const signup = new Signup(accountRepository, mailerGateway);
+  const accountGateway = new AccountGatewayHttp();
   const inputSignup = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -23,7 +21,7 @@ test('Deve solicitar uma nova corrida', async function () {
     isPassenger: true,
     isDriver: false,
   };
-  const resultSignup = await signup.execute(inputSignup);
+  const resultSignup = await accountGateway.signUp(inputSignup);
   const inputRequestRide = {
     passengerId: resultSignup.accountId,
     fromLat: -27.584905257808835,
@@ -48,8 +46,7 @@ test('Não deve poder solicitar uma nova corrida se não for um passageiro', asy
   const connection = new PgPromiseAdapter();
   const accountRepository = new AccountRepositoryDatabase(connection);
   const rideRepository = new RideRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory();
-  const signup = new Signup(accountRepository, mailerGateway);
+  const accountGateway = new AccountGatewayHttp();
   const inputSignup = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -58,7 +55,7 @@ test('Não deve poder solicitar uma nova corrida se não for um passageiro', asy
     isPassenger: false,
     isDriver: true,
   };
-  const resultSignup = await signup.execute(inputSignup);
+  const resultSignup = await accountGateway.signUp(inputSignup);
   const inputRequestRide = {
     passengerId: resultSignup.accountId,
     fromLat: -27.584905257808835,
@@ -75,8 +72,7 @@ test('Não deve poder solicitar uma nova corrida se o passageiro tiver outra cor
   const connection = new PgPromiseAdapter();
   const accountRepository = new AccountRepositoryDatabase(connection);
   const rideRepository = new RideRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory();
-  const signup = new Signup(accountRepository, mailerGateway);
+  const accountGateway = new AccountGatewayHttp();
   const inputSignup = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -85,7 +81,7 @@ test('Não deve poder solicitar uma nova corrida se o passageiro tiver outra cor
     isPassenger: true,
     isDriver: false,
   };
-  const resultSignup = await signup.execute(inputSignup);
+  const resultSignup = await accountGateway.signUp(inputSignup);
   const requestRide = new RequestRide(accountRepository, rideRepository);
   const inputRequestRide = {
     passengerId: resultSignup.accountId,
