@@ -3,10 +3,6 @@ export default interface AccountGateway {
   signUp(input: InputSignUp): Promise<OutputSignUp>
 }
 
-type InputGetAccount = {
-  accountId: string
-}
-
 type OutputGetAccount = {
   accountId: string;
   name: string;
