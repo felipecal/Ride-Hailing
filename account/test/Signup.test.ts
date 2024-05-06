@@ -6,22 +6,19 @@ import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
 import { AccountRepositoryDatabase, AcountRepositoryMemory } from '../src/infra/repository/AccountRepository';
 import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
 import Account from '../src/domain/entity/Account';
-// import AccountGatewayHttp from '../src/infra/gateway/AccountGateway';
 
-// let accountGateway: AccountGatewayHttp;
-//Integration test with unit test
-// beforeEach(() => {
-  // Implementation of fake (AccountDAOMemory and MailerGatewayMemory)
-  // accountGateway = new AccountGatewayHttp();
-// });
+let signup: Signup;
+let getAccount: GetAccount;
 
-test.skip('Deve criar a conta de um passageiro', async function () {
-  const connection = new PgPromiseAdapter()
-  const accountRepository = new AccountRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory()
-  const signup = new Signup(accountRepository, mailerGateway);
-  const getAccount = new GetAccount(accountRepository);
-  // const accountGateway = new AccountGatewayHttp();
+beforeEach(async () => {
+	// Fake é uma implementação falsa, que mimifica a implementação original
+	const accountRepository = new AcountRepositoryMemory();
+	const mailerGateway = new MailerGatewayMemory();
+	signup = new Signup(accountRepository, mailerGateway);
+	getAccount = new GetAccount(accountRepository);
+});
+
+test('Deve criar a conta de um passageiro', async function () {
   const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -38,11 +35,7 @@ test.skip('Deve criar a conta de um passageiro', async function () {
   expect(resultOfGetAccount.cpf).toBe(input.cpf);
 });
 
-test.skip('Nao deve criar a conta de um passageiro com o nome inválido', async function () {
-  const connection = new PgPromiseAdapter()
-  const accountRepository = new AccountRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory()
-  const signup = new Signup(accountRepository, mailerGateway);
+test('Nao deve criar a conta de um passageiro com o nome inválido', async function () {
   const input = {
     name: 'John',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -54,11 +47,7 @@ test.skip('Nao deve criar a conta de um passageiro com o nome inválido', async 
   await expect(() => signup.execute(input)).rejects.toThrow(new Error('Invalid name'));
 });
 
-test.skip('Nao deve criar a conta de um passageiro com o email inválido', async function () {
-  const connection = new PgPromiseAdapter()
-  const accountRepository = new AccountRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory()
-  const signup = new Signup(accountRepository, mailerGateway);
+test('Nao deve criar a conta de um passageiro com o email inválido', async function () {
   const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}`,
@@ -70,11 +59,7 @@ test.skip('Nao deve criar a conta de um passageiro com o email inválido', async
   await expect(signup.execute(input)).rejects.toThrow(new Error('Invalid email'));
 });
 
-test.skip('Nao deve criar a conta de um passageiro com o cpf inválido', async function () {
-  const connection = new PgPromiseAdapter()
-  const accountRepository = new AccountRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory()
-  const signup = new Signup(accountRepository, mailerGateway);
+test('Nao deve criar a conta de um passageiro com o cpf inválido', async function () {
   const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -86,11 +71,7 @@ test.skip('Nao deve criar a conta de um passageiro com o cpf inválido', async f
   await expect(signup.execute(input)).rejects.toThrow(new Error('Invalid cpf'));
 });
 
-test.skip('Não deve criar uma conta para o passageiro se a conta já existe', async function () {
-  const connection = new PgPromiseAdapter()
-  const accountRepository = new AccountRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory()
-  const signup = new Signup(accountRepository, mailerGateway);
+test('Não deve criar uma conta para o passageiro se a conta já existe', async function () {
   const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -103,12 +84,7 @@ test.skip('Não deve criar uma conta para o passageiro se a conta já existe', a
   await expect(() => signup.execute(input)).rejects.toThrow(new Error('Account already exists'));
 });
 
-test.skip('Deve criar a conta de um motorista', async function () {
-  const connection = new PgPromiseAdapter()
-  const accountRepository = new AccountRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory()
-  const signup = new Signup(accountRepository, mailerGateway);
-  const getAccount = new GetAccount(accountRepository);
+test('Deve criar a conta de um motorista', async function () {
   const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -125,11 +101,7 @@ test.skip('Deve criar a conta de um motorista', async function () {
   expect(resultOfGetAccount.cpf).toBe(input.cpf);
 });
 
-test.skip('Não deve criar a conta de um motorista com a placa inválida', async function () {
-  const connection = new PgPromiseAdapter()
-  const accountRepository = new AccountRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory()
-  const signup = new Signup(accountRepository, mailerGateway);
+test('Não deve criar a conta de um motorista com a placa inválida', async function () {
     const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -141,15 +113,12 @@ test.skip('Não deve criar a conta de um motorista com a placa inválida', async
   await expect(signup.execute(input)).rejects.toThrow(new Error('Invalid car plate'));
 });
 
-test.skip('Não deve pegar a conta com o id errado', async function () {
-  const connection = new PgPromiseAdapter()
-  const accountRepository = new AccountRepositoryDatabase(connection);
-  const mailerGateway = new MailerGatewayMemory()
-  const getAccount = new GetAccount(accountRepository);  const randomAccountId = crypto.randomUUID();
+test('Não deve pegar a conta com o id errado', async function () {
+  const randomAccountId = crypto.randomUUID();
   await expect(getAccount.execute(randomAccountId)).rejects.toThrow(new Error('Account not found'));
 });
 
-test.skip('Deve criar a conta para um passageiro com stub', async function () {
+test('Deve criar a conta para um passageiro com stub', async function () {
   const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -159,7 +128,6 @@ test.skip('Deve criar a conta para um passageiro com stub', async function () {
     isDriver: false,
   };
   const connection = new PgPromiseAdapter();
-
   const saveAccountStub = sinon.stub(AccountRepositoryDatabase.prototype, 'saveAccount').resolves();
   const getAccountByEmailStub = sinon.stub(AccountRepositoryDatabase.prototype, 'getByEmail').resolves(undefined);
   const getAccountByIdStub = sinon.stub(AccountRepositoryDatabase.prototype, 'getById').resolves(Account.restore('', input.name, input.email, input.cpf, '', true, false));
@@ -179,8 +147,7 @@ test.skip('Deve criar a conta para um passageiro com stub', async function () {
   await connection.close();
 });
 
-test.skip('Deve criar a conta de um passageiro com spy', async function () {
-
+test('Deve criar a conta de um passageiro com spy', async function () {
   const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -207,7 +174,7 @@ test.skip('Deve criar a conta de um passageiro com spy', async function () {
   await connection.close();
 });
 
-test.skip('Deve criar uma conta para o passageiro com mock', async function () {
+test('Deve criar uma conta para o passageiro com mock', async function () {
   // Mixes the stub with spy creating expectations in the object itself
   const input = {
     name: 'John Doe',
