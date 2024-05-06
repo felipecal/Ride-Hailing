@@ -1,7 +1,7 @@
 import GetRide from '../src/application/usecase/GetRide';
 import RequestRide from '../src/application/usecase/RequestRide';
 import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
-import AccountGatewayHttp from '../src/infra/gateway/AccountGateway';
+import AccountGatewayHttp from '../src/infra/gateway/AccountGatewayHttp';
 import { AccountRepositoryDatabase } from '../src/infra/repository/AccountRepository';
 import { PositionRepositoryDatabase } from '../src/infra/repository/PositionRepository';
 import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';

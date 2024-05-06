@@ -8,7 +8,7 @@ import AcceptRide from '../src/application/usecase/AcceptRide';
 import StartRide from '../src/application/usecase/StartRide';
 import UpdatePosition from '../src/application/usecase/UpdatePosition';
 import { PositionRepositoryDatabase } from '../src/infra/repository/PositionRepository';
-import AccountGatewayHttp from '../src/infra/gateway/AccountGateway';
+import AccountGatewayHttp from '../src/infra/gateway/AccountGatewayHttp';
 
 test('Deve atualizar a posição da corrida', async function () {
   const connection = new PgPromiseAdapter();

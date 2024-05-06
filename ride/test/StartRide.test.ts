@@ -7,7 +7,7 @@ import AcceptRide from '../src/application/usecase/AcceptRide';
 import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
 import StartRide from '../src/application/usecase/StartRide';
 import { PositionRepositoryDatabase } from '../src/infra/repository/PositionRepository';
-import AccountGatewayHttp from '../src/infra/gateway/AccountGateway';
+import AccountGatewayHttp from '../src/infra/gateway/AccountGatewayHttp';
 
 test('Deve iniciar uma corrida', async function () {
   const connection = new PgPromiseAdapter();

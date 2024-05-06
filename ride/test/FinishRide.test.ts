@@ -9,8 +9,8 @@ import UpdatePosition from '../src/application/usecase/UpdatePosition';
 import { PositionRepositoryDatabase } from '../src/infra/repository/PositionRepository';
 import FinishRide from '../src/application/usecase/FinishRide';
 import Registry from '../src/infra/di/Registry';
-import PaymentGatewayHttp from '../src/infra/gateway/PaymentGateway';
-import AccountGatewayHttp from '../src/infra/gateway/AccountGateway';
+import PaymentGatewayHttp from '../src/infra/gateway/PaymentGatewayHttp';
+import AccountGatewayHttp from '../src/infra/gateway/AccountGatewayHttp';
 
 test('Deve finalizar uma corrida', async function () {
   const connection = new PgPromiseAdapter();
