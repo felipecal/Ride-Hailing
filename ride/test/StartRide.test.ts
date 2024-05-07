@@ -2,19 +2,18 @@ import GetRide from '../src/application/usecase/GetRide';
 import RequestRide from '../src/application/usecase/RequestRide';
 import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
 import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
-import { AccountRepositoryDatabase } from '../src/infra/repository/AccountRepository';
 import AcceptRide from '../src/application/usecase/AcceptRide';
 import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
 import StartRide from '../src/application/usecase/StartRide';
 import { PositionRepositoryDatabase } from '../src/infra/repository/PositionRepository';
 import AccountGatewayHttp from '../src/infra/gateway/AccountGatewayHttp';
+import { AxiosAdapter } from '../src/infra/http/HttpClient';
 
 test('Deve iniciar uma corrida', async function () {
   const connection = new PgPromiseAdapter();
-  const accountRepository = new AccountRepositoryDatabase(connection);
   const rideRepository = new RideRepositoryDatabase(connection);
   const positionRepository = new PositionRepositoryDatabase(connection);
-  const accountGateway = new AccountGatewayHttp();
+  const accountGateway = new AccountGatewayHttp(new AxiosAdapter());
   const inputSignup = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -33,7 +32,7 @@ test('Deve iniciar uma corrida', async function () {
     isDriver: true,
   };
   const outputSignupDriver = await accountGateway.signUp(inputSignupDriver);
-  const requestRide = new RequestRide(accountRepository, rideRepository);
+  const requestRide = new RequestRide(accountGateway, rideRepository);
   const inputRequestRide = {
     passengerId: outputSignup.accountId,
     fromLat: -27.584905257808835,
@@ -42,7 +41,7 @@ test('Deve iniciar uma corrida', async function () {
     toLong: -48.522234807851476,
   };
   const outputRequestRide = await requestRide.execute(inputRequestRide);
-  const acceptRide = new AcceptRide(accountRepository, rideRepository);
+  const acceptRide = new AcceptRide(accountGateway, rideRepository);
   const inputAcceptRide = {
     rideId: outputRequestRide.rideId,
     driverId: outputSignupDriver.accountId,
@@ -53,7 +52,7 @@ test('Deve iniciar uma corrida', async function () {
     rideId: outputRequestRide.rideId,
   };
   await startRide.execute(inputStartRide);
-  const getRide = new GetRide(accountRepository, rideRepository, positionRepository);
+  const getRide = new GetRide(accountGateway, rideRepository, positionRepository);
   const inputGetRide = {
     rideId: outputRequestRide.rideId,
   };
