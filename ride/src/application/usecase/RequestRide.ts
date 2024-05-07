@@ -1,15 +1,15 @@
-import { AccountRepository } from '../../infra/repository/AccountRepository';
 import { RideRepository } from '../../infra/repository/RideRepository';
 import Ride from '../../domain/entity/Ride';
+import AccountGateway from '../gateway/AccountGateway';
 
 export default class RequestRide {
   constructor(
-    readonly accountRepository: AccountRepository,
+    readonly accountGateway: AccountGateway,
     readonly rideRepository: RideRepository,
   ) {}
 
   async execute(input: Input): Promise<Output> {
-    const resultOfGetAccount = await this.accountRepository.getById(input.passengerId);
+    const resultOfGetAccount = await this.accountGateway.getAccount(input.passengerId);
     if (!resultOfGetAccount) throw new Error('Account not exists');
     if (!resultOfGetAccount.isPassenger) throw new Error('Not is a passenger');
     const activeRide = await this.rideRepository.getActivesRidesByPassengerID(input.passengerId);
@@ -23,14 +23,11 @@ export default class RequestRide {
 }
 
 type Input = {
-  rideId?: string;
   passengerId: string;
   fromLat: number;
   fromLong: number;
   toLat: number;
   toLong: number;
-  status?: string;
-  date?: Date;
 };
 
 type Output = {
