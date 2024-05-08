@@ -3,8 +3,9 @@ import Segment from '../vo/Segment';
 import Coord from '../vo/Coord';
 import RideStatus, { RideStatusFactory } from '../vo/RideStatus';
 import { FareCalculatorFactory } from '../ds/CalculateFare';
+import Observable from '../../infra/mediator/Observable';
 
-export default class Ride {
+export default class Ride extends Observable {
   status: RideStatus;
 
   private constructor(
@@ -18,6 +19,7 @@ export default class Ride {
     public distance: number,
     public fare: number,
   ) {
+    super();
     this.status = RideStatusFactory.create(this, status);
   }
 
@@ -68,6 +70,7 @@ export default class Ride {
 
   finish() {
     this.status.finish();
+    this.notify('rideCompleted', { rideId: this.rideId, amount: this.fare });
   }
 
   getFromLat() {
