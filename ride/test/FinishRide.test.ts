@@ -11,6 +11,8 @@ import Registry from '../src/infra/di/Registry';
 import PaymentGatewayHttp from '../src/infra/gateway/PaymentGatewayHttp';
 import AccountGatewayHttp from '../src/infra/gateway/AccountGatewayHttp';
 import { AxiosAdapter } from '../src/infra/http/HttpClient';
+import Mediator from '../src/infra/mediator/Mediator';
+import ProcessPayment from '../src/application/usecase/ProcessPayment';
 
 test('Deve finalizar uma corrida', async function () {
   const connection = new PgPromiseAdapter();
@@ -84,6 +86,11 @@ test('Deve finalizar uma corrida', async function () {
   const paymentGateway = new PaymentGatewayHttp();
   Registry.getInstance().provide('rideRepository', rideRepository);
   Registry.getInstance().provide('paymentGateway', paymentGateway);
+  const mediator = new Mediator();
+  mediator.register('rideCompleted', async (data: any) => {
+    const processPayment = new ProcessPayment();
+    await processPayment.execute(data);
+  });
   const finishRide = new FinishRide();
   const inputFinishRide = {
     rideId: outputRequestRide.rideId,
