@@ -15,7 +15,7 @@ test('Deve atualizar a posição da corrida', async function () {
   // const accountRepository = new AccountRepositoryDatabase(connection);
   const rideRepository = new RideRepositoryDatabase(connection);
   const positionRepository = new PositionRepositoryDatabase(connection);
-  const accountGateway = new AccountGatewayHttp(new AxiosAdapter())
+  const accountGateway = new AccountGatewayHttp(new AxiosAdapter());
   const inputSignup = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,

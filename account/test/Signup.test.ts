@@ -11,11 +11,11 @@ let signup: Signup;
 let getAccount: GetAccount;
 
 beforeEach(async () => {
-	// Fake é uma implementação falsa, que mimifica a implementação original
-	const accountRepository = new AcountRepositoryMemory();
-	const mailerGateway = new MailerGatewayMemory();
-	signup = new Signup(accountRepository, mailerGateway);
-	getAccount = new GetAccount(accountRepository);
+  // Fake é uma implementação falsa, que mimifica a implementação original
+  const accountRepository = new AcountRepositoryMemory();
+  const mailerGateway = new MailerGatewayMemory();
+  signup = new Signup(accountRepository, mailerGateway);
+  getAccount = new GetAccount(accountRepository);
 });
 
 test('Deve criar a conta de um passageiro', async function () {
@@ -102,7 +102,7 @@ test('Deve criar a conta de um motorista', async function () {
 });
 
 test('Não deve criar a conta de um motorista com a placa inválida', async function () {
-    const input = {
+  const input = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
     cpf: '87748248800',
