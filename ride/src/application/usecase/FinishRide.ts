@@ -12,7 +12,7 @@ export default class FinishRide {
   readonly paymentGateway!: PaymentGateway;
   @inject('mediator')
   readonly mediator!: Mediator;
-@inject('queue')
+  @inject('queue')
   readonly queue!: Queue;
 
   constructor() {}
