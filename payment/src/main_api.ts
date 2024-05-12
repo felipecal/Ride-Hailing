@@ -6,12 +6,12 @@ import PaymentController from './infra/http/PaymentController';
 import { RabbitMQAdapter } from './infra/queue/Queue';
 import QueueController from './infra/queue/QueueController';
 
-async function main () {
+async function main() {
   const httpServer = new ExpressAdapter();
   const processPayment = new ProcessPayment();
   new PaymentController(httpServer, processPayment);
   const queue = new RabbitMQAdapter();
-  await queue.connect()
+  await queue.connect();
   new QueueController(queue, processPayment);
   httpServer.listen(3001);
 }
