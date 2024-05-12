@@ -1,12 +1,11 @@
 import GetRide from '../src/application/usecase/GetRide';
 import RequestRide from '../src/application/usecase/RequestRide';
 import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
-import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
 import AcceptRide from '../src/application/usecase/AcceptRide';
 import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
 import { PositionRepositoryDatabase } from '../src/infra/repository/PositionRepository';
 import { AxiosAdapter } from '../src/infra/http/HttpClient';
-import AccountGatewayHttp from '../src/infra/gateway/AccountGatewayHttp';
+import { AccountGatewayHttp } from '../src/infra/gateway/AccountGatewayHttp';
 
 test('Deve aceitar uma corrida', async function () {
   const connection = new PgPromiseAdapter();
@@ -21,7 +20,7 @@ test('Deve aceitar uma corrida', async function () {
     isPassenger: true,
     isDriver: false,
   };
-  const outputSignup = await accountGateway.signUp(inputSignup);
+  const outputSignup = await accountGateway.signup(inputSignup);
   const inputSignupDriver = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -30,7 +29,7 @@ test('Deve aceitar uma corrida', async function () {
     isPassenger: false,
     isDriver: true,
   };
-  const outputSignupDriver = await accountGateway.signUp(inputSignupDriver);
+  const outputSignupDriver = await accountGateway.signup(inputSignupDriver);
   const requestRide = new RequestRide(accountGateway, rideRepository);
   const inputRequestRide = {
     passengerId: outputSignup.accountId,

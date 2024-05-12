@@ -1,14 +1,13 @@
 import GetRide from '../src/application/usecase/GetRide';
 import RequestRide from '../src/application/usecase/RequestRide';
-import { MailerGatewayMemory } from '../src/infra/gateway/MailerGateway';
 import { RideRepositoryDatabase } from '../src/infra/repository/RideRepository';
 import { PgPromiseAdapter, UnitOfWork } from '../src/infra/database/DatabaseConnection';
 import AcceptRide from '../src/application/usecase/AcceptRide';
 import StartRide from '../src/application/usecase/StartRide';
 import UpdatePosition from '../src/application/usecase/UpdatePosition';
 import { PositionRepositoryDatabase } from '../src/infra/repository/PositionRepository';
-import AccountGatewayHttp from '../src/infra/gateway/AccountGatewayHttp';
 import { AxiosAdapter } from '../src/infra/http/HttpClient';
+import { AccountGatewayHttp } from '../src/infra/gateway/AccountGatewayHttp';
 
 test('Deve atualizar a posição da corrida', async function () {
   const connection = new PgPromiseAdapter();
@@ -24,7 +23,7 @@ test('Deve atualizar a posição da corrida', async function () {
     isPassenger: true,
     isDriver: false,
   };
-  const outputSignup = await accountGateway.signUp(inputSignup);
+  const outputSignup = await accountGateway.signup(inputSignup);
   const inputSignupDriver = {
     name: 'John Doe',
     email: `john.doe${Math.random()}@gmail.com`,
@@ -33,7 +32,7 @@ test('Deve atualizar a posição da corrida', async function () {
     isPassenger: false,
     isDriver: true,
   };
-  const outputSignupDriver = await accountGateway.signUp(inputSignupDriver);
+  const outputSignupDriver = await accountGateway.signup(inputSignupDriver);
   const requestRide = new RequestRide(accountGateway, rideRepository);
   const inputRequestRide = {
     passengerId: outputSignup.accountId,

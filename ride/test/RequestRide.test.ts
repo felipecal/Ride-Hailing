@@ -1,7 +1,7 @@
 import GetRide from '../src/application/usecase/GetRide';
 import RequestRide from '../src/application/usecase/RequestRide';
 import { PgPromiseAdapter } from '../src/infra/database/DatabaseConnection';
-import AccountGatewayHttp from '../src/infra/gateway/AccountGatewayHttp';
+import { AccountGatewayHttp } from '../src/infra/gateway/AccountGatewayHttp';
 import { AxiosAdapter } from '../src/infra/http/HttpClient';
 // import { AccountRepositoryDatabase } from '../src/infra/repository/AccountRepository';
 import { PositionRepositoryDatabase } from '../src/infra/repository/PositionRepository';
@@ -22,7 +22,7 @@ test('Deve solicitar uma nova corrida', async function () {
     isPassenger: true,
     isDriver: false,
   };
-  const resultSignup = await accountGateway.signUp(inputSignup);
+  const resultSignup = await accountGateway.signup(inputSignup);
   const inputRequestRide = {
     passengerId: resultSignup.accountId,
     fromLat: -27.584905257808835,
@@ -56,7 +56,7 @@ test('Não deve poder solicitar uma nova corrida se não for um passageiro', asy
     isPassenger: false,
     isDriver: true,
   };
-  const resultSignup = await accountGateway.signUp(inputSignup);
+  const resultSignup = await accountGateway.signup(inputSignup);
   const inputRequestRide = {
     passengerId: resultSignup.accountId,
     fromLat: -27.584905257808835,
@@ -82,7 +82,7 @@ test('Não deve poder solicitar uma nova corrida se o passageiro tiver outra cor
     isPassenger: true,
     isDriver: false,
   };
-  const resultSignup = await accountGateway.signUp(inputSignup);
+  const resultSignup = await accountGateway.signup(inputSignup);
   const requestRide = new RequestRide(accountGateway, rideRepository);
   const inputRequestRide = {
     passengerId: resultSignup.accountId,
