@@ -9,7 +9,7 @@ export default class RequestRide {
   ) {}
 
   async execute(input: Input): Promise<Output> {
-    const resultOfGetAccount = await this.accountGateway.getAccount(input.passengerId);
+    const resultOfGetAccount = await this.accountGateway.getAccountById(input.passengerId);
     if (!resultOfGetAccount) throw new Error('Account not exists');
     if (!resultOfGetAccount.isPassenger) throw new Error('Not is a passenger');
     const activeRide = await this.rideRepository.getActivesRidesByPassengerID(input.passengerId);

@@ -20,12 +20,11 @@ export default class FinishRide {
   async execute(input: Input): Promise<void> {
     const ride = await this.rideRepository.getRideById(input.rideId);
     ride.register('rideCompleted', async (domainEvent: DomainEvent) => {
-      this.queue.publish(domainEvent.eventName, domainEvent.data);
+      await this.queue.publish(domainEvent.eventName, domainEvent.data);
     });
     if (!ride) throw new Error('Ride not found ');
     ride.finish();
     await this.rideRepository.updateRide(ride);
-    // await this.paymentGateway.processPayment({ rideId: ride.rideId, amount: ride.fare });
   }
 }
 

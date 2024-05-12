@@ -10,10 +10,10 @@ export default class GetRide {
   ) {}
   async execute(input: Input): Promise<Output> {
     const ride = await this.rideRepository.getRideById(input.rideId);
-    const passenger = await this.accountGateway.getAccount(ride.passengerId);
+    const passenger = await this.accountGateway.getAccountById(ride.passengerId);
     let driver;
     if (ride.driverId) {
-      driver = await this.accountGateway.getAccount(ride.driverId);
+      driver = await this.accountGateway.getAccountById(ride.driverId);
     }
     const positions = await this.positionRepository.listPositionByRideId(input.rideId);
     return {

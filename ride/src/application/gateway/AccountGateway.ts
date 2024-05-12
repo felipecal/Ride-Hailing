@@ -1,6 +1,6 @@
 export default interface AccountGateway {
-  getAccount(accountId: string): Promise<OutputGetAccount>;
-  signUp(input: InputSignUp): Promise<OutputSignUp>;
+  getAccountById(accountId: string): Promise<OutputGetAccount>;
+  signup(input: InputSignUp): Promise<OutputSignUp>;
 }
 
 type OutputGetAccount = {
@@ -22,6 +22,6 @@ type InputSignUp = {
   isDriver: boolean;
 };
 
-type OutputSignUp = {
+export type OutputSignUp = {
   accountId: string;
 };
