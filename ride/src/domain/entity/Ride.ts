@@ -4,6 +4,7 @@ import Coord from '../vo/Coord';
 import RideStatus, { RideStatusFactory } from '../vo/RideStatus';
 import { FareCalculatorFactory } from '../ds/CalculateFare';
 import Observable from '../../infra/mediator/Observable';
+import RideCompleted from '../event/RideCompleted';
 
 export default class Ride extends Observable {
   status: RideStatus;
@@ -70,7 +71,7 @@ export default class Ride extends Observable {
 
   finish() {
     this.status.finish();
-    this.notify('rideCompleted', { rideId: this.rideId, amount: this.fare });
+    this.notify(new RideCompleted({ rideId: this.rideId, amount: this.fare }));
   }
 
   getFromLat() {
