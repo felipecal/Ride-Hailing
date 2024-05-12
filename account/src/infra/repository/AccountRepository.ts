@@ -11,11 +11,11 @@ export interface AccountRepository {
 // Driven/Resource Adapter
 export class AccountRepositoryDatabase implements AccountRepository {
   constructor(readonly connection: DatabaseConnection) {}
-	async getAccountByEmail (email: string) {
-		const [accountData] = await this.connection.query("select * from cccat16.account where email = $1", [email]);
-		if (!accountData) return;
-		return Account.restore(accountData.account_id, accountData.name, accountData.email, accountData.cpf, accountData.car_plate, accountData.is_passenger, accountData.is_driver);
-	}
+  async getAccountByEmail(email: string) {
+    const [accountData] = await this.connection.query('select * from cccat16.account where email = $1', [email]);
+    if (!accountData) return;
+    return Account.restore(accountData.account_id, accountData.name, accountData.email, accountData.cpf, accountData.car_plate, accountData.is_passenger, accountData.is_driver);
+  }
 
   // Driven/Adapter
   async getById(accountId: string) {

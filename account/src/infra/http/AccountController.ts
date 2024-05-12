@@ -10,7 +10,7 @@ export default class AccountController {
     readonly signup: Signup,
     readonly getAccount: GetAccount,
   ) {
-    httpServer.register('post', '/signup', async function (params: any, body: any) {      
+    httpServer.register('post', '/signup', async function (params: any, body: any) {
       const outputSignup = await signup.execute(body);
       return outputSignup;
     });
