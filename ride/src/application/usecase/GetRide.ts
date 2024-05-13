@@ -17,17 +17,20 @@ export default class GetRide {
     }
     const positions = await this.positionRepository.listPositionByRideId(input.rideId);
     return {
-      rideId: ride.rideId,
       passengerId: ride.passengerId,
+      passengerName: passenger.name,
+      passengerEmail: passenger.email,
+      passengerCpf: passenger.cpf,
+      driverName: driver?.name,
+      driverEmail: driver?.email,
+      driverCpf: driver?.cpf,
+      driverCarPlate: driver?.carPlate,
+      rideId: ride.rideId,
       fromLat: ride.getFromLat(),
       fromLong: ride.getFromLong(),
       toLat: ride.getToLat(),
       toLong: ride.getToLong(),
       status: ride.getStatus(),
-      passengerName: passenger.name,
-      passengerEmail: passenger.email,
-      driverName: driver?.name,
-      driverEmail: driver?.email,
       distance: ride.distance,
       fare: ride.fare,
     };
@@ -42,17 +45,20 @@ type Input = {
 
 //DTO - Data Transfer Object
 type Output = {
-  rideId: string;
   passengerId: string;
+  passengerName: string;
+  passengerEmail: string;
+  passengerCpf: string;
+  driverName?: string;
+  driverEmail?: string;
+  driverCpf?: string;
+  driverCarPlate?: string;
+  rideId: string;
   fromLat: number;
   fromLong: number;
   toLat: number;
   toLong: number;
   status: string;
-  passengerName: string;
-  passengerEmail: string;
-  driverName?: string;
-  driverEmail?: string;
   distance: number;
   fare: number;
 };
