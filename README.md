@@ -15,7 +15,7 @@ After run docker command run the script in the repository.
 - Crate rabbitmq in docker with command:
 
 ```
-docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
+docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 --restart always rabbitmq:3.13-management
 ```
 
 To use RabbitMQ management UI access, go to: http://localhost:15672 and use username: guest and password: guest.
