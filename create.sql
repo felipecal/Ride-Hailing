@@ -44,3 +44,14 @@ amount numeric,
 date timestamp,
 status text
 );
+
+create table cccat16.ride_projection (
+	ride_id uuid,
+	passenger_id uuid,
+	driver_id uuid,
+	status text,
+	passenger_name text not null,
+	passenger_email text not null,
+	driver_name text not null,
+	driver_email text not null
+);
