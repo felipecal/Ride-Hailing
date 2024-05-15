@@ -12,11 +12,11 @@ export default class Transaction {
 		return new Transaction(transactionId, rideId, amount, status, date);
 	}
 
-	// approve () {
-	// 	this.status = "approved";
-	// }
+	approve () {
+		this.status = "approved";
+	}
 
-	// reject () {
-	// 	this.status = "rejected";
-	// }
+	reject () {
+		this.status = "rejected";
+	}
 }
