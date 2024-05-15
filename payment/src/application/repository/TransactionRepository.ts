@@ -1,7 +1,6 @@
-import Transaction from "../../domain/Transaction";
+import Transaction from '../../domain/Transaction';
 
-export default interface TransactionRepository{
-  save(transaction: Transaction):Promise<void>;
-  get (transactionId: string): Promise<Transaction>;
-
+export default interface TransactionRepository {
+  save(transaction: Transaction): Promise<void>;
+  get(transactionId: string): Promise<Transaction>;
 }

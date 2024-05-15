@@ -11,9 +11,9 @@ import TransactionRepositoryORM from './infra/repository/TransactionRepositoryOR
 
 async function main() {
   const httpServer = new ExpressAdapter();
-  const connection = new PgPromiseAdapter()
+  const connection = new PgPromiseAdapter();
   const orm = new ORM(connection);
-	const transactionRepository = new TransactionRepositoryORM(orm);
+  const transactionRepository = new TransactionRepositoryORM(orm);
   const processPayment = new ProcessPayment(transactionRepository);
   new PaymentController(httpServer, processPayment);
   const queue = new RabbitMQAdapter();
