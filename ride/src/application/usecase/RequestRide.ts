@@ -1,6 +1,7 @@
 import { RideRepository } from '../../infra/repository/RideRepository';
 import Ride from '../../domain/entity/Ride';
 import AccountGateway from '../gateway/AccountGateway';
+import { RabbitMQAdapter } from '../../infra/queue/Queue';
 
 export default class RequestRide {
   constructor(
@@ -16,6 +17,14 @@ export default class RequestRide {
     if (activeRide) throw new Error('Passenger already has a active ride');
     const ride = Ride.create(input.passengerId, input.fromLat, input.fromLong, input.toLat, input.toLong);
     await this.rideRepository.saveRide(ride);
+    const queue = new RabbitMQAdapter();
+    await queue.connect();
+    await queue.publish('rideRequested', {
+      rideId: ride.rideId,
+			passengerId: ride.passengerId,
+			passengerName: resultOfGetAccount.name,
+			passengerEmail: resultOfGetAccount.email
+    })
     return {
       rideId: ride.rideId,
     };
