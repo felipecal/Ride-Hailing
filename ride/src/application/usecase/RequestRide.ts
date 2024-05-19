@@ -21,10 +21,10 @@ export default class RequestRide {
     await queue.connect();
     await queue.publish('rideRequested', {
       rideId: ride.rideId,
-			passengerId: ride.passengerId,
-			passengerName: resultOfGetAccount.name,
-			passengerEmail: resultOfGetAccount.email
-    })
+      passengerId: ride.passengerId,
+      passengerName: resultOfGetAccount.name,
+      passengerEmail: resultOfGetAccount.email,
+    });
     return {
       rideId: ride.rideId,
     };
